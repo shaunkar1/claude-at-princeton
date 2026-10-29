@@ -1,0 +1,1221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude@Princeton — What Princeton is building with Claude</title>
+<meta name="description" content="A showcase of projects, guides and events from Princeton students building with Claude Code and other AI tools.">
+<link rel="canonical" href="https://claudeatprinceton.org/">
+<meta name="theme-color" content="#FAF9F5">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Claude@Princeton">
+<meta property="og:url" content="https://claudeatprinceton.org/">
+<meta property="og:title" content="Claude@Princeton — What Princeton is building with Claude">
+<meta property="og:description" content="A showcase of projects, guides and events from Princeton students building with Claude Code and other AI tools.">
+<meta property="og:image" content="https://claudeatprinceton.org/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Claude@Princeton: What Princeton is building with Claude">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Claude@Princeton — What Princeton is building with Claude">
+<meta name="twitter:description" content="A showcase of projects, guides and events from Princeton students building with Claude Code and other AI tools.">
+<meta name="twitter:image" content="https://claudeatprinceton.org/assets/og-image.png">
+<meta name="twitter:image:alt" content="Claude@Princeton: What Princeton is building with Claude">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Fonts load without blocking first paint; the size-matched fallbacks in the <style> keep line breaks stable when they swap in. -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:wght@400;600&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:wght@400;600&display=swap"></noscript>
+
+<!-- TODO: confirm logo usage with our Anthropic club contact before adding any official marks.
+     Until then the wordmark stays text-only: no Anthropic logo, no Princeton shield. -->
+<style>
+/* ---------- Design tokens (Direction A, "Warm Claude") ---------- */
+:root {
+  --ivory: #FAF9F5;
+  --paper: #FFFFFF;
+  --sand: #F3F0E8;
+  --line: #E8E4DA;
+  --line-strong: #D6D1C4;
+  --chip: #F0EDE4;
+  --ink: #141413;
+  --ink-2: #4A4943;
+  --ink-3: #6B6A63;
+  --clay: #D97757;
+  --clay-deep: #B8532F;
+  --clay-ink: #8A3D20;
+  --clay-tint: #F7E3DA;
+
+  --serif: "Source Serif 4", "Source Serif Fallback", Georgia, "Times New Roman", serif;
+  --sans: Inter, "Inter Fallback", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --radius: 16px;
+  --pill: 999px;
+  --nav-h: 72px;
+}
+
+/* Local fallbacks scaled to the web fonts' widths (measured per weight), so text wraps
+   the same before and after the fonts arrive and nothing shifts. */
+@font-face { font-family: "Source Serif Fallback"; src: local("Georgia"); font-weight: 400 500; size-adjust: 106.51%; }
+@font-face { font-family: "Source Serif Fallback"; src: local("Georgia Bold"), local("Georgia-Bold"); font-weight: 600 700; size-adjust: 93.22%; }
+@font-face { font-family: "Inter Fallback"; src: local("Arial"), local("ArialMT"); font-weight: 400; size-adjust: 106.52%; }
+@font-face { font-family: "Inter Fallback"; src: local("Arial"), local("ArialMT"); font-weight: 500; size-adjust: 107.62%; }
+@font-face { font-family: "Inter Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 600 700; size-adjust: 100.95%; }
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-padding-top: calc(var(--nav-h) + 16px); -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+html.modal-open { overflow: hidden; }
+body { margin: 0; background: var(--ivory); color: var(--ink-2); font: 400 16px/1.5 var(--sans); -webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4 { margin: 0; font-family: var(--serif); font-weight: 600; color: var(--ink); text-wrap: balance; }
+p { margin: 0; text-wrap: pretty; }
+ul { margin: 0; padding: 0; list-style: none; }
+a { color: inherit; }
+img { display: block; max-width: 100%; }
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+[hidden] { display: none !important; }
+
+:focus-visible { outline: 2px solid var(--clay-deep); outline-offset: 3px; }
+.on-clay :focus-visible { outline-color: var(--ink); }
+
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.skip-link { position: absolute; left: 16px; top: -120px; z-index: 100; padding: 12px 20px; border-radius: var(--pill); background: var(--ink); color: var(--ivory); text-decoration: none; font-weight: 500; }
+.skip-link:focus { top: 12px; }
+
+.wrap { width: min(1200px, 100% - 48px); margin-inline: auto; }
+
+/* ---------- Buttons, links, chips, tags ---------- */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 22px; border: 1px solid transparent; border-radius: var(--pill); font: 500 16px/1 var(--sans); text-decoration: none; white-space: nowrap; transition: background-color .15s, border-color .15s, color .15s; }
+.btn-dark { background: var(--ink); color: var(--ivory); }
+.btn-dark:hover { background: var(--ink-2); }
+.btn-clay { background: var(--clay); color: var(--ink); }
+.btn-clay:hover { background: var(--clay-deep); }
+.btn-outline { background: transparent; border-color: var(--ink); color: var(--ink); }
+.btn-outline:hover { background: var(--paper); }
+.btn-ivory { background: var(--ivory); color: var(--ink); }
+.btn-ivory:hover { background: var(--sand); }
+
+.text-link { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; padding: 0; border: 0; background: none; color: var(--ink); font-weight: 500; text-decoration: underline; text-decoration-color: var(--line-strong); text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.text-link:hover { color: var(--clay-deep); text-decoration-color: currentColor; }
+.on-dark.text-link { color: var(--ivory); text-decoration-color: var(--ink-3); }
+.on-dark.text-link:hover { color: var(--ivory); text-decoration-color: currentColor; }
+
+.chip { flex: none; min-height: 44px; padding: 0 18px; border: 1px solid var(--line-strong); border-radius: var(--pill); background: var(--paper); color: var(--ink-2); font: 500 15px/1 var(--sans); transition: background-color .15s, border-color .15s, color .15s; }
+.chip:hover { border-color: var(--ink-3); color: var(--ink); }
+.chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--ivory); }
+
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { display: inline-flex; align-items: center; min-height: 26px; padding: 0 10px; border-radius: var(--pill); background: var(--chip); color: var(--ink-2); font-size: 13px; font-weight: 500; line-height: 1.2; }
+.tag-tool { background: var(--clay-tint); color: var(--clay-ink); }
+
+.pill-link { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 18px; border: 1px solid var(--line-strong); border-radius: var(--pill); background: var(--paper); color: var(--ink); font-size: 15px; font-weight: 500; text-decoration: none; transition: border-color .15s; }
+.pill-link:hover { border-color: var(--ink-3); }
+
+.eyebrow, .type-label { font: 600 13px/1.4 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.meta { font-size: 14px; color: var(--ink-3); }
+
+/* ---------- Nav ---------- */
+.site-header { position: sticky; top: 0; z-index: 50; background: var(--ivory); border-bottom: 1px solid var(--line); }
+.nav { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: var(--nav-h); }
+.wordmark { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: var(--ink); font: 600 20px/1 var(--serif); text-decoration: none; white-space: nowrap; }
+.dot { flex: none; width: 14px; height: 14px; border-radius: 50%; background: var(--clay); }
+.nav-menu { display: flex; align-items: center; gap: 12px; }
+.nav-links { display: flex; gap: 2px; }
+.nav-links a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; border-radius: var(--pill); color: var(--ink-2); font-size: 15px; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background-color .15s, color .15s; }
+.nav-links a:hover { color: var(--ink); }
+.nav-links a[aria-current="true"] { background: var(--chip); color: var(--ink); }
+.nav-toggle { display: none; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; border: 1px solid var(--line-strong); border-radius: var(--pill); background: transparent; color: var(--ink); }
+.nav-toggle .icon-close, .nav-toggle[aria-expanded="true"] .icon-menu { display: none; }
+.nav-toggle[aria-expanded="true"] .icon-close { display: block; }
+
+@media (min-width: 760px) and (max-width: 1023.98px) {
+  .nav { gap: 16px; }
+  .wordmark { font-size: 18px; }
+  .nav-menu { gap: 8px; }
+  .nav-links a { padding: 0 8px; font-size: 14px; }
+  .nav-menu .btn { padding: 0 16px; font-size: 14px; }
+}
+@media (max-width: 759.98px) {
+  .nav-toggle { display: inline-flex; }
+  .nav-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 12px; padding: 8px 24px 24px; background: var(--ivory); border-bottom: 1px solid var(--line); }
+  .nav-menu.is-open { display: flex; }
+  .nav-links { flex-direction: column; gap: 2px; }
+  .nav-links a { display: flex; padding: 0 16px; font-size: 17px; }
+}
+
+/* ---------- Sections ---------- */
+.section { padding: 72px 0; border-top: 1px solid var(--line); }
+.section-sand { background: var(--sand); }
+.section-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 24px; margin-bottom: 32px; }
+h2 { font-size: 40px; line-height: 1.15; letter-spacing: -0.01em; }
+.section-sub { margin-top: 8px; font-size: 18px; }
+.count { margin-top: 8px; font-size: 16px; color: var(--ink-3); }
+.block-title { font-size: 28px; line-height: 1.2; letter-spacing: -0.01em; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 24px; }
+
+/* ---------- Hero ---------- */
+.hero { padding: 96px 0 88px; }
+h1 { max-width: 8.5em; margin-top: 20px; font-size: clamp(44px, 7vw, 80px); font-weight: 400; line-height: 1.04; letter-spacing: -0.02em; }
+.accent { color: var(--clay-deep); }
+.lede { max-width: 36em; margin-top: 24px; font-size: 20px; color: var(--ink-2); }
+.cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+
+/* ---------- Cards ---------- */
+.card { border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); overflow: hidden; }
+.card-title { font: 600 22px/1.25 var(--serif); color: var(--ink); }
+.card-body { display: flex; flex: 1; flex-direction: column; gap: 10px; padding: 20px 22px 12px; }
+.card-actions { display: flex; flex-wrap: wrap; gap: 0 24px; margin-top: auto; }
+.clamp-2 { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; }
+
+/* ---------- Builds ---------- */
+.filters { display: grid; gap: 12px; margin-bottom: 32px; }
+.filter-row { display: flex; align-items: flex-start; gap: 8px; }
+.filter-label { flex: none; display: inline-flex; align-items: center; min-width: 120px; min-height: 44px; color: var(--ink-3); font-size: 14px; font-weight: 500; }
+.chip-set { display: flex; flex-wrap: wrap; gap: 8px; }
+.search { position: relative; width: min(420px, 100%); }
+.search svg { position: absolute; top: 50%; left: 16px; color: var(--ink-3); transform: translateY(-50%); pointer-events: none; }
+.search input { width: 100%; min-height: 44px; padding: 0 18px 0 44px; border: 1px solid var(--line-strong); border-radius: var(--pill); background: var(--paper); color: var(--ink); font-size: 16px; -webkit-appearance: none; appearance: none; }
+.search input::placeholder { color: var(--ink-3); }
+@media (max-width: 759.98px) {
+  /* Chip rows scroll sideways on phones instead of wrapping into a tall stack. */
+  .filter-row { margin-inline: -24px; padding: 6px 24px; overflow-x: auto; scrollbar-width: none; scroll-padding-inline: 24px; }
+  .filter-row::-webkit-scrollbar { display: none; }
+  .filter-label { min-width: 0; margin-right: 4px; }
+  .chip-set { flex-wrap: nowrap; }
+}
+
+.build-card { display: flex; flex-direction: column; }
+.thumb { position: relative; display: grid; place-items: center; aspect-ratio: 16 / 9; border-bottom: 1px solid var(--line); background: var(--chip); color: var(--ink-3); }
+.thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.link-btn { font-size: 16px; }
+
+.empty { display: grid; justify-items: center; gap: 20px; padding: 48px 24px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); text-align: center; }
+.empty p { font-size: 18px; color: var(--ink); }
+
+/* ---------- Write-up modal ---------- */
+.modal { width: min(720px, 100% - 32px); max-height: min(88vh, 900px); padding: 0; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); color: var(--ink-2); overflow: auto; overscroll-behavior: contain; }
+.modal::backdrop { background: color-mix(in srgb, var(--ink) 55%, transparent); }
+.modal-head { position: sticky; top: 0; z-index: 1; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 28px 32px 20px; border-bottom: 1px solid var(--line); background: var(--paper); }
+.modal-title { margin-top: 6px; font-size: 28px; line-height: 1.2; }
+.modal-head .meta { margin-top: 6px; }
+.modal-body { padding: 24px 32px 32px; }
+.prose p { font-size: 17px; }
+.prose p + p { margin-top: 14px; }
+.modal-sub { margin: 28px 0 10px; font-size: 18px; line-height: 1.3; }
+.modal-links { display: flex; flex-wrap: wrap; gap: 8px; }
+.icon-btn { flex: none; display: inline-grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 1px solid var(--line-strong); border-radius: 50%; background: var(--paper); color: var(--ink); }
+.icon-btn:hover { background: var(--sand); }
+@media (max-width: 759.98px) {
+  .modal-head { padding: 20px 20px 16px; }
+  .modal-body { padding: 20px 20px 28px; }
+  .modal-title { font-size: 24px; }
+}
+
+/* ---------- Library ---------- */
+.lib-card { display: flex; flex-direction: column; gap: 10px; padding: 24px; color: inherit; text-decoration: none; transition: border-color .15s; }
+.lib-card:hover { border-color: var(--line-strong); }
+.lib-card:hover .card-title { color: var(--clay-deep); }
+.lib-card .why { display: block; }
+.lib-products { display: flex; flex-wrap: wrap; gap: 6px; }
+.lib-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 6px; color: var(--ink-3); font-size: 14px; }
+.lib-meta svg { flex: none; color: var(--ink); }
+
+/* ---------- Events ---------- */
+.featured-event { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 28px 48px; padding: clamp(28px, 5vw, 48px); border-radius: var(--radius); background: var(--ink); color: var(--ivory); }
+.featured-event .eyebrow { display: flex; align-items: center; gap: 10px; color: var(--ivory); }
+.fe-title { margin-top: 16px; color: var(--ivory); font-size: clamp(30px, 4.5vw, 44px); line-height: 1.1; letter-spacing: -0.01em; }
+.fe-when { margin-top: 12px; font-size: 18px; font-weight: 500; }
+.fe-blurb { max-width: 40em; margin-top: 8px; color: var(--line-strong); font-size: 17px; }
+.fe-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }
+@media (max-width: 759.98px) { .featured-event { grid-template-columns: 1fr; } }
+
+.events-grid { margin-top: 24px; }
+.event-card { display: flex; flex-direction: column; gap: 6px; padding: 24px 24px 12px; }
+.event-card .card-title { margin-top: 4px; }
+.event-when { margin-top: 4px; color: var(--ink); font-weight: 500; }
+
+.past { margin-top: 24px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); }
+.past summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 60px; padding: 0 24px; border-radius: var(--radius); color: var(--ink); font-weight: 500; cursor: pointer; list-style: none; }
+.past summary::-webkit-details-marker { display: none; }
+.past summary svg { transition: transform .2s; }
+.past[open] summary svg { transform: rotate(180deg); }
+.past-list li { display: grid; grid-template-columns: 140px minmax(0, 1fr) auto; gap: 4px 24px; padding: 16px 24px; border-top: 1px solid var(--line); }
+.past-date { color: var(--ink-3); font-size: 15px; }
+.past-name { color: var(--ink); font-weight: 500; }
+@media (max-width: 759.98px) { .past-list li { grid-template-columns: 1fr; } }
+
+.winners { margin-top: 72px; }
+.winner-group + .winner-group { margin-top: 48px; }
+.winner-group .eyebrow { margin: 8px 0 24px; }
+.winner-card { display: flex; flex-direction: column; gap: 10px; padding: 24px 24px 12px; }
+.winner-top { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 4px; }
+.badge { display: inline-grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--line-strong); border-radius: 50%; background: var(--sand); color: var(--ink); font: 600 20px/1 var(--serif); }
+.badge-first { border-color: var(--clay); background: var(--clay); }
+.place { color: var(--ink); font-weight: 600; }
+.hm-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 24px; }
+.hm-label { margin-right: 4px; color: var(--ink); font-weight: 500; }
+.hm-row ul { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* ---------- Campus Leads ---------- */
+.leads-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr)); gap: 24px; }
+.lead-card { display: flex; flex-direction: column; align-items: center; padding: 28px 24px 24px; text-align: center; }
+.avatar { width: 96px; height: 96px; border: 1px solid var(--line); border-radius: 50%; background: var(--chip); object-fit: cover; }
+.avatar-initials { display: grid; place-items: center; color: var(--ink-2); font: 600 30px/1 var(--serif); }
+.lead-card .card-title { margin-top: 16px; }
+.lead-card .meta { margin-top: 4px; font-size: 15px; }
+.lead-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 16px; }
+
+/* ---------- About ---------- */
+.about-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); align-items: start; gap: 48px; }
+.about-copy p { max-width: 34em; margin-top: 20px; font-size: 20px; }
+.join-card { padding: clamp(28px, 4vw, 40px); border-radius: var(--radius); background: var(--clay); color: var(--ink); }
+.join-card h3 { font-size: 28px; line-height: 1.2; }
+.join-card p { margin: 12px 0 24px; font-size: 18px; }
+@media (max-width: 759.98px) { .about-grid { grid-template-columns: 1fr; gap: 32px; } }
+
+/* ---------- Footer ---------- */
+.site-footer { padding: 40px 0 48px; border-top: 1px solid var(--line); color: var(--ink-3); font-size: 15px; }
+.footer-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px; }
+.footer-inner p + p { margin-top: 4px; }
+.footer-name { color: var(--ink); font-weight: 500; }
+.footer-links { display: flex; flex-wrap: wrap; gap: 0 24px; }
+.footer-links a { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink-2); text-underline-offset: 4px; }
+.footer-links a:hover { color: var(--clay-deep); }
+
+.noscript { padding: 24px 0; color: var(--ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav wrap" aria-label="Main">
+    <a class="wordmark" href="#top"><span class="dot" aria-hidden="true"></span>Claude@Princeton</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
+      <span class="sr-only">Menu</span>
+      <svg class="icon-menu" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <svg class="icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="nav-menu" id="nav-menu">
+      <ul class="nav-links">
+        <li><a href="#builds">Builds</a></li>
+        <li><a href="#library">Library</a></li>
+        <li><a href="#events">Events</a></li>
+        <li><a href="#leads">Campus Leads</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+      <a class="btn btn-dark" href="#todo" data-link="join">Join the club</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <p class="eyebrow">Claude Builder Club · Princeton University</p>
+      <h1 id="hero-title">What Princeton is building with <span class="accent">Claude</span></h1>
+      <p class="lede">A showcase of projects, guides and events from Princeton students building with Claude Code and other AI tools.</p>
+      <div class="cta-row">
+        <a class="btn btn-clay" href="#todo" data-link="shareBuild">Share your build</a>
+        <a class="btn btn-outline" href="#events">Upcoming events</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="builds" class="section" aria-labelledby="builds-title">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2 id="builds-title">Builds</h2>
+          <p class="count" id="build-count" aria-live="polite"></p>
+        </div>
+        <a class="btn btn-outline" href="#todo" data-link="shareBuild">Add your build</a>
+      </div>
+      <div class="filters">
+        <div class="search">
+          <label class="sr-only" for="build-search">Search builds</label>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <input type="search" id="build-search" placeholder="Search builds and builders" autocomplete="off">
+        </div>
+        <div id="build-chips" class="filters"></div>
+      </div>
+      <div class="grid" id="build-grid"></div>
+      <div class="empty" id="build-empty" hidden>
+        <p>No builds match yet — be the first to share one.</p>
+        <a class="btn btn-clay" href="#todo" data-link="shareBuild">Share your build</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="library" class="section section-sand" aria-labelledby="library-title">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2 id="library-title">Claude Library</h2>
+          <p class="section-sub">Guides, tutorials and talks members found useful.</p>
+        </div>
+        <a class="btn btn-outline" href="#todo" data-link="suggestResource">Suggest a resource</a>
+      </div>
+      <div id="library-chips" class="filters"></div>
+      <p class="sr-only" id="library-status" aria-live="polite"></p>
+      <div class="grid" id="library-grid"></div>
+      <div class="empty" id="library-empty" hidden>
+        <p>No resources match yet — suggest one.</p>
+        <a class="btn btn-clay" href="#todo" data-link="suggestResource">Suggest a resource</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="events" class="section" aria-labelledby="events-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="events-title">Events</h2>
+      </div>
+      <div id="next-event"></div>
+      <div class="grid events-grid" id="event-grid"></div>
+      <div id="past-events"></div>
+
+      <div class="winners" id="winners">
+        <h3 class="block-title">Hackathon winners</h3>
+        <div id="winner-groups"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="leads" class="section section-sand" aria-labelledby="leads-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="leads-title">Campus Leads</h2>
+      </div>
+      <div class="leads-grid" id="lead-grid"></div>
+    </div>
+  </section>
+
+  <section id="about" class="section" aria-labelledby="about-title">
+    <div class="wrap about-grid">
+      <div class="about-copy">
+        <h2 id="about-title">About</h2>
+        <!-- TODO: confirm the "free Claude Pro and API credits" wording with Anthropic before launch. -->
+        <p>Claude@Princeton is the community of Princeton students building, creating and learning with Claude by Anthropic. Come to a tabling, demo or buildathon to get free Claude Pro and API credits.</p>
+      </div>
+      <div class="join-card on-clay">
+        <h3>Join the club</h3>
+        <p>Get invites to buildathons, workshops and demo nights, and meet other Princeton students building with Claude.</p>
+        <a class="btn btn-dark" href="#todo" data-link="join">Sign up</a>
+      </div>
+    </div>
+  </section>
+  <noscript><p class="wrap noscript">Turn on JavaScript to see builds, the library, events and campus leads.</p></noscript>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div>
+      <p class="footer-name">Claude@Princeton · A Claude Builder Club</p>
+      <p>Built by Shaun Karani with Claude Code</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="#todo" data-link="github">GitHub</a></li>
+      <li><a href="#todo" data-link="email">Email</a></li>
+      <li><a href="#top">Back to top <span aria-hidden="true">↑</span></a></li>
+    </ul>
+  </div>
+</footer>
+
+<dialog class="modal" id="writeup" aria-labelledby="writeup-title">
+  <div class="modal-head">
+    <div>
+      <p class="eyebrow">How I built this</p>
+      <h2 class="modal-title" id="writeup-title"></h2>
+      <p class="meta" id="writeup-meta"></p>
+    </div>
+    <button class="icon-btn" type="button" id="writeup-close" aria-label="Close">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <div class="modal-body" id="writeup-body"></div>
+</dialog>
+
+<script>
+/* =============================================================================
+   CONTENT
+   Everything the site shows lives in the six blocks below. To add something,
+   copy the example in the comment above an array, paste it into the array and
+   fill it in. You never need to touch the layout code further down.
+   - Plain text only. Every string is escaped before it is put on the page.
+   - Any link that is still "TODO" renders as a harmless dead link.
+   - Step-by-step guide: docs/ADDING_CONTENT.md
+   ============================================================================= */
+
+/* LINKS: site-wide destinations. Example:
+   join: "https://forms.gle/abc123",
+   email: "claude@princeton.edu",
+*/
+const LINKS = {
+  join: "TODO_JOIN_FORM_URL",
+  shareBuild: "TODO_SHARE_FORM_URL",
+  suggestResource: "TODO_RESOURCE_FORM_URL",
+  email: "TODO@princeton.edu",
+  github: "https://github.com/shaunkar1/claude-at-princeton",
+};
+
+/* BUILDS: one object per project. Featured builds show first, then newest. Example:
+  {
+    id: "project-name",                     // unique, lowercase-with-dashes
+    name: "Project name",
+    description: "One or two sentences for the card.",
+    longWriteup: "First paragraph of the 'How I built this' write-up.\n\nSecond paragraph.",
+    builders: [{ name: "First Last", year: "27", linkedin: "https://www.linkedin.com/in/handle" }],
+    claudeTools: ["Claude Code"],           // Claude Code, Claude API, Claude.ai, MCP, Agent SDK
+    otherTools: ["Cursor"],
+    categories: ["Research"],               // Campus life, Research, Social impact, Education, Finance, Tools
+    demoUrl: "https://example.com",
+    repoUrl: "https://github.com/handle/project",
+    image: "assets/builds/project-name.png", // 16:9 screenshot, or "" for a placeholder
+    featured: false,
+    addedAt: "2026-10-29",
+  },
+*/
+const BUILDS = [
+  {
+    id: "placeholder-research",
+    name: "[Placeholder] Research build",
+    description: "[Placeholder] Two lines about what the project does and who it helps. Replace this entry with a real submission from the share-your-build form.",
+    longWriteup: "[Placeholder] This is where the builder explains how they made it: the problem they started with, how they used Claude, and what broke along the way.\n\n[Placeholder] A second paragraph on what they would do differently next time. Separate paragraphs with a blank line.",
+    builders: [
+      { name: "[Placeholder] Builder A", year: "27", linkedin: "TODO" },
+      { name: "[Placeholder] Builder B", year: "27", linkedin: "TODO" },
+    ],
+    claudeTools: ["Claude Code", "MCP"],
+    otherTools: ["[Placeholder] Other tool"],
+    categories: ["Research", "Tools"],
+    demoUrl: "TODO",
+    repoUrl: "TODO",
+    image: "",
+    featured: true,
+    addedAt: "2026-10-20",
+  },
+  {
+    id: "placeholder-campus-life",
+    name: "[Placeholder] Campus life build",
+    description: "[Placeholder] A short summary of the build. Descriptions longer than two lines are clamped on the card and shown in full in the write-up.",
+    longWriteup: "[Placeholder] Write-up for the campus life build.",
+    builders: [{ name: "[Placeholder] Builder C", year: "28", linkedin: "TODO" }],
+    claudeTools: ["Claude API", "Agent SDK"],
+    otherTools: [],
+    categories: ["Campus life", "Social impact"],
+    demoUrl: "TODO",
+    repoUrl: "",
+    image: "",
+    featured: false,
+    addedAt: "2026-10-27",
+  },
+  {
+    id: "placeholder-education",
+    name: "[Placeholder] Education build",
+    description: "[Placeholder] A short summary of the build and the people it is for.",
+    longWriteup: "[Placeholder] Write-up for the education build.",
+    builders: [
+      { name: "[Placeholder] Builder D", year: "26", linkedin: "TODO" },
+      { name: "[Placeholder] Builder E", year: "29", linkedin: "TODO" },
+    ],
+    claudeTools: ["Claude.ai", "Claude Code"],
+    otherTools: ["[Placeholder] Other tool"],
+    categories: ["Education", "Finance"],
+    demoUrl: "TODO",
+    repoUrl: "TODO",
+    image: "",
+    featured: false,
+    addedAt: "2026-10-15",
+  },
+];
+
+/* LIBRARY: guides, videos, slides and docs members recommend. Newest first. Example:
+  {
+    title: "Resource title",
+    url: "https://example.com/guide",
+    type: "Guide",                          // Guide, Video, Workshop slides, Prompt pack, Docs
+    products: ["Claude Code"],
+    why: "One line on why it's worth the time.",
+    sharedBy: "First Last",
+    addedAt: "2026-10-29",
+  },
+*/
+const LIBRARY = [
+  {
+    title: "[Placeholder] Getting-started guide",
+    url: "TODO",
+    type: "Guide",
+    products: ["Claude Code"],
+    why: "[Placeholder] One line on why this is worth a member's time.",
+    sharedBy: "[Placeholder] Member A",
+    addedAt: "2026-10-25",
+  },
+  {
+    title: "[Placeholder] Workshop slides",
+    url: "TODO",
+    type: "Workshop slides",
+    products: ["Claude API", "MCP"],
+    why: "[Placeholder] One line on what the slides cover.",
+    sharedBy: "[Placeholder] Member B",
+    addedAt: "2026-10-18",
+  },
+  {
+    title: "[Placeholder] Prompt pack",
+    url: "TODO",
+    type: "Prompt pack",
+    products: ["Claude.ai"],
+    why: "[Placeholder] One line on when to reach for these prompts.",
+    sharedBy: "[Placeholder] Member C",
+    addedAt: "2026-10-10",
+  },
+];
+
+/* EVENTS: upcoming and past are worked out from the date (Princeton time).
+   The soonest upcoming event gets the dark "Next up" card. Example:
+  {
+    name: "Event name",
+    kind: "Workshop",                       // Buildathon, Tabling, Workshop, Demo night
+    date: "2026-11-14",                     // YYYY-MM-DD
+    start: "18:00",                         // 24-hour time
+    end: "21:00",
+    location: "Building, room",
+    rsvpUrl: "https://example.com/rsvp",
+    blurb: "One line about the event.",
+  },
+*/
+const EVENTS = [
+  {
+    name: "[Placeholder] Fall buildathon",
+    kind: "Buildathon",
+    date: "2026-11-14",
+    start: "18:00",
+    end: "21:00",
+    location: "[Placeholder] Location",
+    rsvpUrl: "TODO",
+    blurb: "[Placeholder] One line on what happens at the event and who should come.",
+  },
+  {
+    name: "[Placeholder] Intro workshop",
+    kind: "Workshop",
+    date: "2026-12-02",
+    start: "16:30",
+    end: "18:00",
+    location: "[Placeholder] Location",
+    rsvpUrl: "TODO",
+    blurb: "[Placeholder] One line about the workshop.",
+  },
+  {
+    name: "[Placeholder] Welcome tabling",
+    kind: "Tabling",
+    date: "2026-10-08",
+    start: "11:00",
+    end: "14:00",
+    location: "[Placeholder] Location",
+    rsvpUrl: "",
+    blurb: "[Placeholder] One line about the tabling.",
+  },
+];
+
+/* WINNERS: hackathon results, grouped by event. place 1, 2 or 3 goes on the podium;
+   place "HM" goes in the honorable mentions row. Leave the array empty to hide the block. Example:
+  {
+    place: 1,
+    event: "Event name",
+    name: "Project name",
+    track: "Track name",
+    description: "One or two sentences.",
+    builders: ["First Last", "First Last"],
+    devpostUrl: "https://devpost.com/software/project-name",
+  },
+*/
+const WINNERS = [
+  {
+    place: 1,
+    event: "[Placeholder] Spring buildathon",
+    name: "[Placeholder] First-place project",
+    track: "[Placeholder] Track",
+    description: "[Placeholder] One or two sentences on what the team built.",
+    builders: ["[Placeholder] Builder F", "[Placeholder] Builder G"],
+    devpostUrl: "TODO",
+  },
+  {
+    place: 2,
+    event: "[Placeholder] Spring buildathon",
+    name: "[Placeholder] Second-place project",
+    track: "[Placeholder] Track",
+    description: "[Placeholder] One or two sentences on what the team built.",
+    builders: ["[Placeholder] Builder H"],
+    devpostUrl: "TODO",
+  },
+  {
+    place: 3,
+    event: "[Placeholder] Spring buildathon",
+    name: "[Placeholder] Third-place project",
+    track: "[Placeholder] Track",
+    description: "[Placeholder] One or two sentences on what the team built.",
+    builders: ["[Placeholder] Builder I", "[Placeholder] Builder J"],
+    devpostUrl: "TODO",
+  },
+  {
+    place: "HM",
+    event: "[Placeholder] Spring buildathon",
+    name: "[Placeholder] Honorable mention",
+    track: "",
+    description: "",
+    builders: [],
+    devpostUrl: "TODO",
+  },
+];
+
+/* LEADS: campus leads, in the order shown. Example:
+  {
+    name: "First Last",
+    role: "Role",
+    photo: "assets/leads/first-last.jpg",   // square, at least 192×192; "" shows initials
+    linkedin: "https://www.linkedin.com/in/handle",
+    email: "netid@princeton.edu",
+  },
+*/
+const LEADS = [
+  // TODO: add assets/leads/shaun.jpg and set photo to "assets/leads/shaun.jpg"; fill in LinkedIn and email.
+  { name: "Shaun Karani", role: "Campus Growth Lead", photo: "", linkedin: "TODO", email: "TODO" },
+  // TODO: replace these placeholders with the other campus leads.
+  { name: "[Placeholder] Lead name", role: "[Placeholder] Role", photo: "", linkedin: "TODO", email: "TODO" },
+  { name: "[Placeholder] Lead name", role: "[Placeholder] Role", photo: "", linkedin: "TODO", email: "TODO" },
+];
+
+/* Chip order for the filters. Values that appear in the data but not here still
+   get a chip, sorted after these. Values with no entries don't get a chip. */
+const CATEGORY_ORDER = ["Campus life", "Research", "Social impact", "Education", "Finance", "Tools"];
+const PRODUCT_ORDER = ["Claude Code", "Claude API", "Claude.ai", "MCP", "Agent SDK"];
+const TYPE_ORDER = ["Guide", "Video", "Workshop slides", "Prompt pack", "Docs"];
+
+/* =============================================================================
+   APP: layout and behavior. Nothing below needs editing to add content.
+   ============================================================================= */
+(() => {
+  "use strict";
+
+  /* ---------- helpers ---------- */
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+  const ESC = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+  const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ESC[c]);
+  const slug = (v) => String(v).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  const list = (v) => (Array.isArray(v) ? v : v ? [v] : []);
+  const isTodo = (url) => !url || /^\s*todo/i.test(url);
+  const safeHref = (url) => (isTodo(url) || /^\s*(javascript|vbscript|data):/i.test(url) ? "#todo" : url);
+  const mailHref = (addr) => (isTodo(addr) || !/^[^\s@]+@[^\s@]+$/.test(addr) ? "#todo" : `mailto:${addr}`);
+  const isExternal = (url) => /^https?:\/\//i.test(url || "");
+  // External links open in a new tab and say so to screen readers.
+  const linkAttrs = (url) => `href="${esc(safeHref(url))}"${isExternal(url) ? ' target="_blank" rel="noopener"' : ""}`;
+  const newTab = (url) => (isExternal(url) ? '<span class="sr-only"> (opens in a new tab)</span>' : "");
+  const classYear = (y) => (y ? `\u2019${String(y).slice(-2)}` : "");
+  const plural = (n, word) => `${n} ${word}${n === 1 ? "" : "s"}`;
+  const andList = (names) => (names.length < 2 ? names.join("") : `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`);
+  const byNewest = (a, b) => String(b.addedAt || "").localeCompare(String(a.addedAt || ""));
+  const initials = (name) => String(name).replace(/\[.*?\]/g, "").trim().split(/\s+/).map((w) => w[0] || "").join("").slice(0, 2).toUpperCase();
+  const tagItem = (text, cls = "") => `<li class="tag ${cls}">${esc(text)}</li>`;
+  const arrow = '<span aria-hidden="true">→</span>';
+
+  const svg = (paths, size = 20) => `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
+  const ICON = {
+    image: svg('<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M21 16l-5-5-8 8"/>', 36),
+    external: svg('<path d="M7 17L17 7M9 7h8v8"/>', 18),
+    chevron: svg('<path d="M6 9l6 6 6-6"/>'),
+  };
+
+  // Missing screenshots and photos fall back to their placeholder instead of a broken image.
+  document.addEventListener("error", (e) => {
+    const img = e.target;
+    if (!(img instanceof HTMLImageElement)) return;
+    if (img.dataset.initials !== undefined) {
+      const span = document.createElement("span");
+      span.className = "avatar avatar-initials";
+      span.setAttribute("aria-hidden", "true");
+      span.textContent = img.dataset.initials;
+      img.replaceWith(span);
+    } else {
+      img.remove();
+    }
+  }, true);
+
+  // Links that are still TODO do nothing when clicked.
+  document.addEventListener("click", (e) => {
+    if (e.target.closest('a[href="#todo"]')) e.preventDefault();
+  });
+
+  $$("[data-link]").forEach((a) => {
+    const key = a.dataset.link;
+    a.setAttribute("href", key === "email" ? mailHref(LINKS.email) : safeHref(LINKS[key]));
+  });
+
+  /* ---------- filter chips (shared by Builds and Library) ---------- */
+  function vocab(items, pick, order) {
+    const seen = new Set(items.flatMap(pick));
+    const extra = [...seen].filter((v) => !order.includes(v)).sort();
+    return [...order.filter((v) => seen.has(v)), ...extra];
+  }
+
+  function chipRow(prefix, row, active) {
+    if (!row.values.length) return "";
+    const id = `${prefix}-${row.key}-label`;
+    const chips = [["All", ""], ...row.values.map((v) => [v, slug(v)])]
+      .map(([text, value]) => `<button type="button" class="chip" data-key="${esc(row.key)}" data-value="${esc(value)}" aria-pressed="${value === active}">${esc(text)}</button>`)
+      .join("");
+    return `<div class="filter-row" role="group" aria-labelledby="${id}"><span class="filter-label" id="${id}">${esc(row.label)}</span><div class="chip-set">${chips}</div></div>`;
+  }
+
+  function mountChips(el, prefix, rows, state, onChange) {
+    el.innerHTML = rows.map((row) => chipRow(prefix, row, state[row.key])).join("");
+    el.addEventListener("click", (e) => {
+      const chip = e.target.closest(".chip");
+      if (!chip) return;
+      state[chip.dataset.key] = chip.dataset.value;
+      syncChips(el, state);
+      onChange();
+    });
+  }
+
+  function syncChips(el, state) {
+    $$(".chip", el).forEach((c) => c.setAttribute("aria-pressed", String(state[c.dataset.key] === c.dataset.value)));
+  }
+
+  /* ---------- Builds ---------- */
+  function builtBy(builders) {
+    if (!builders.length) return "";
+    const years = [...new Set(builders.map((b) => classYear(b.year)).filter(Boolean))];
+    if (years.length > 1) return `Built by ${andList(builders.map((b) => [b.name, classYear(b.year)].filter(Boolean).join(" ")))}`;
+    return `Built by ${andList(builders.map((b) => b.name))}${years.length ? ` · ${years[0]}` : ""}`;
+  }
+
+  function buildCard(b) {
+    const img = b.image ? `<img src="${esc(b.image)}" alt="Screenshot of ${esc(b.name)}" width="640" height="360" loading="lazy" decoding="async">` : "";
+    const demo = b.demoUrl
+      ? `<a class="text-link" ${linkAttrs(b.demoUrl)}>View demo ${arrow}<span class="sr-only">: ${esc(b.name)}</span>${newTab(b.demoUrl)}</a>`
+      : "";
+    return `
+      <article class="card build-card">
+        <div class="thumb">${ICON.image}${img}</div>
+        <div class="card-body">
+          <ul class="tags" aria-label="Tools and categories">${b.claudeTools.map((t) => tagItem(t, "tag-tool")).join("")}${b.categories.map((c) => tagItem(c)).join("")}</ul>
+          <h3 class="card-title">${esc(b.name)}</h3>
+          <p class="clamp-2">${esc(b.description)}</p>
+          <p class="meta">${esc(builtBy(b.builders))}</p>
+          <div class="card-actions">
+            ${demo}
+            <button type="button" class="text-link link-btn" data-writeup="${esc(b.id)}" aria-haspopup="dialog">How I built this<span class="sr-only">: ${esc(b.name)}</span></button>
+          </div>
+        </div>
+      </article>`;
+  }
+
+  function writeupBody(b) {
+    const paras = String(b.longWriteup || b.description || "")
+      .split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean)
+      .map((p) => `<p>${esc(p)}</p>`).join("");
+    const links = [
+      b.demoUrl && ["View demo", b.demoUrl],
+      b.repoUrl && ["Source code", b.repoUrl],
+      ...b.builders.filter((x) => x.linkedin).map((x) => [`${x.name} on LinkedIn`, x.linkedin]),
+    ].filter(Boolean);
+    return `
+      <div class="prose">${paras}</div>
+      ${b.claudeTools.length ? `<h3 class="modal-sub">Claude tools</h3><ul class="tags">${b.claudeTools.map((t) => tagItem(t, "tag-tool")).join("")}</ul>` : ""}
+      ${b.otherTools.length ? `<h3 class="modal-sub">Other AI tools used</h3><ul class="tags">${b.otherTools.map((t) => tagItem(t)).join("")}</ul>` : ""}
+      ${links.length ? `<h3 class="modal-sub">Links</h3><ul class="modal-links">${links.map(([text, url]) => `<li><a class="pill-link" ${linkAttrs(url)}>${esc(text)}${newTab(url)}</a></li>`).join("")}</ul>` : ""}`;
+  }
+
+  /* ---------- Library ---------- */
+  function libraryCard(r) {
+    const products = r.products.length
+      ? `<span class="lib-products">${r.products.map((p) => `<span class="tag tag-tool">${esc(p)}</span>`).join("")}</span>`
+      : "";
+    return `
+      <a class="card lib-card" ${linkAttrs(r.url)}>
+        <span class="type-label">${esc(r.type)}</span>
+        <h3 class="card-title">${esc(r.title)}</h3>
+        <span class="why">${esc(r.why)}</span>
+        ${products}
+        <span class="lib-meta"><span>Shared by ${esc(r.sharedBy)}</span>${ICON.external}</span>
+        ${newTab(r.url)}
+      </a>`;
+  }
+
+  /* ---------- Events ---------- */
+  // Events are written in Princeton time, so "now" is computed in America/New_York too.
+  function princetonNow() {
+    const parts = Object.fromEntries(
+      new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23" })
+        .formatToParts(new Date()).map((p) => [p.type, p.value])
+    );
+    return { date: `${parts.year}-${parts.month}-${parts.day}`, time: `${parts.hour}:${parts.minute}` };
+  }
+  const isUpcoming = (e, now) => e.date > now.date || (e.date === now.date && (e.end || e.start || "23:59") > now.time);
+
+  function fmtDate(date, opts) {
+    return new Intl.DateTimeFormat("en-US", { timeZone: "UTC", ...opts }).format(new Date(`${date}T12:00:00Z`));
+  }
+  function clock(t) {
+    const [h, m] = t.split(":").map(Number);
+    return { text: m ? `${h % 12 || 12}:${String(m).padStart(2, "0")}` : `${h % 12 || 12}`, half: h < 12 ? "AM" : "PM" };
+  }
+  function timeRange(start, end) {
+    if (!start) return "";
+    const a = clock(start);
+    if (!end) return `${a.text} ${a.half}`;
+    const b = clock(end);
+    return a.half === b.half ? `${a.text}–${b.text} ${b.half}` : `${a.text} ${a.half}–${b.text} ${b.half}`;
+  }
+  const longDate = (e) => fmtDate(e.date, { weekday: "short", month: "short", day: "numeric" });
+
+  const ICS_TIMEZONE = [
+    "BEGIN:VTIMEZONE", "TZID:America/New_York",
+    "BEGIN:DAYLIGHT", "TZOFFSETFROM:-0500", "TZOFFSETTO:-0400", "TZNAME:EDT", "DTSTART:19700308T020000", "RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU", "END:DAYLIGHT",
+    "BEGIN:STANDARD", "TZOFFSETFROM:-0400", "TZOFFSETTO:-0500", "TZNAME:EST", "DTSTART:19701101T020000", "RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU", "END:STANDARD",
+    "END:VTIMEZONE",
+  ];
+  const icsText = (s) => String(s).replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\r?\n/g, "\\n");
+  // RFC 5545 wants lines under 75 octets; longer ones continue on the next line after a space.
+  const icsFold = (line) => line.match(/.{1,72}/g).join("\r\n ");
+
+  function icsHref(e) {
+    const day = e.date.replace(/-/g, "");
+    const stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+/, "");
+    let when;
+    if (e.start) {
+      const end = e.end || `${String(Math.min(Number(e.start.slice(0, 2)) + 1, 23)).padStart(2, "0")}${e.start.slice(2)}`;
+      when = [`DTSTART;TZID=America/New_York:${day}T${e.start.replace(":", "")}00`, `DTEND;TZID=America/New_York:${day}T${end.replace(":", "")}00`];
+    } else {
+      const next = new Date(`${e.date}T12:00:00Z`);
+      next.setUTCDate(next.getUTCDate() + 1);
+      when = [`DTSTART;VALUE=DATE:${day}`, `DTEND;VALUE=DATE:${next.toISOString().slice(0, 10).replace(/-/g, "")}`];
+    }
+    const rsvp = isExternal(e.rsvpUrl) ? e.rsvpUrl : "";
+    const lines = [
+      "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Claude@Princeton//Events//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
+      ...ICS_TIMEZONE,
+      "BEGIN:VEVENT",
+      `UID:${slug(e.name)}-${day}@claudeatprinceton.org`,
+      `DTSTAMP:${stamp}`,
+      ...when,
+      `SUMMARY:${icsText(e.name)}`,
+      e.location && `LOCATION:${icsText(e.location)}`,
+      `DESCRIPTION:${icsText([e.blurb, rsvp && `RSVP: ${rsvp}`].filter(Boolean).join("\n"))}`,
+      rsvp && `URL:${rsvp}`,
+      "END:VEVENT", "END:VCALENDAR",
+    ].filter(Boolean);
+    return `data:text/calendar;charset=utf-8,${encodeURIComponent(lines.map(icsFold).join("\r\n") + "\r\n")}`;
+  }
+
+  function calendarLink(e, cls = "") {
+    return `<a class="text-link ${cls}" href="${esc(icsHref(e))}" download="${esc(slug(e.name) || "event")}.ics">Add to calendar<span class="sr-only">: ${esc(e.name)}</span></a>`;
+  }
+  function rsvpLink(e) {
+    return e.rsvpUrl ? `<a class="text-link" ${linkAttrs(e.rsvpUrl)}>RSVP ${arrow}<span class="sr-only">: ${esc(e.name)}</span>${newTab(e.rsvpUrl)}</a>` : "";
+  }
+
+  function featuredEvent(e) {
+    return `
+      <article class="featured-event" aria-labelledby="next-event-title">
+        <div>
+          <p class="eyebrow"><span class="dot" aria-hidden="true"></span>Next up</p>
+          <h3 class="fe-title" id="next-event-title">${esc(e.name)}</h3>
+          <p class="fe-when"><time datetime="${esc(e.date)}">${esc(longDate(e))}</time>${[timeRange(e.start, e.end), e.location].filter(Boolean).map((s) => ` · ${esc(s)}`).join("")}</p>
+          ${e.blurb ? `<p class="fe-blurb">${esc(e.blurb)}</p>` : ""}
+        </div>
+        <div class="fe-actions">
+          ${e.rsvpUrl ? `<a class="btn btn-ivory" ${linkAttrs(e.rsvpUrl)}>RSVP<span class="sr-only"> to ${esc(e.name)}</span>${newTab(e.rsvpUrl)}</a>` : ""}
+          ${calendarLink(e, "on-dark")}
+        </div>
+      </article>`;
+  }
+
+  function eventCard(e) {
+    return `
+      <article class="card event-card">
+        <p class="type-label">${esc(e.kind)}</p>
+        <h3 class="card-title">${esc(e.name)}</h3>
+        <p class="event-when"><time datetime="${esc(e.date)}">${esc(longDate(e))}</time>${e.start ? ` · ${esc(timeRange(e.start, e.end))}` : ""}</p>
+        ${e.location ? `<p class="meta">${esc(e.location)}</p>` : ""}
+        <div class="card-actions">${rsvpLink(e)}${calendarLink(e)}</div>
+      </article>`;
+  }
+
+  function pastEvents(events) {
+    if (!events.length) return "";
+    const rows = events.map((e) => `
+      <li>
+        <span class="past-date"><time datetime="${esc(e.date)}">${esc(fmtDate(e.date, { month: "short", day: "numeric", year: "numeric" }))}</time></span>
+        <span class="past-name">${esc(e.name)}</span>
+        <span class="meta">${esc([e.kind, e.location].filter(Boolean).join(" · "))}</span>
+      </li>`).join("");
+    return `<details class="past"><summary><span>Past events <span class="meta">(${events.length})</span></span>${ICON.chevron}</summary><ul class="past-list">${rows}</ul></details>`;
+  }
+
+  function renderEvents() {
+    const now = princetonNow();
+    const valid = EVENTS.filter((e) => /^\d{4}-\d{2}-\d{2}$/.test(e.date || ""));
+    const sorted = valid.sort((a, b) => `${a.date}${a.start || ""}`.localeCompare(`${b.date}${b.start || ""}`));
+    const upcoming = sorted.filter((e) => isUpcoming(e, now));
+    const past = sorted.filter((e) => !isUpcoming(e, now)).reverse();
+    const [next, ...rest] = upcoming;
+    $("#next-event").innerHTML = next
+      ? featuredEvent(next)
+      : `<div class="empty"><p>No events on the calendar right now. Join the club to hear about the next one.</p><a class="btn btn-clay" href="${esc(safeHref(LINKS.join))}">Join the club</a></div>`;
+    $("#event-grid").innerHTML = rest.map(eventCard).join("");
+    $("#event-grid").hidden = !rest.length;
+    $("#past-events").innerHTML = pastEvents(past);
+  }
+
+  /* ---------- Hackathon winners ---------- */
+  const PLACE = { 1: "1st place", 2: "2nd place", 3: "3rd place" };
+
+  function winnerCard(w) {
+    const p = Number(w.place);
+    return `
+      <article class="card winner-card">
+        <div class="winner-top">
+          <span class="badge${p === 1 ? " badge-first" : ""}" aria-hidden="true">${p}</span>
+          <span class="place">${PLACE[p]}</span>
+          ${w.track ? `<span class="tag">${esc(w.track)}</span>` : ""}
+        </div>
+        <h4 class="card-title">${esc(w.name)}</h4>
+        ${w.description ? `<p>${esc(w.description)}</p>` : ""}
+        ${w.builders.length ? `<p class="meta">Built by ${esc(andList(w.builders))}</p>` : ""}
+        <div class="card-actions"><a class="text-link" ${linkAttrs(w.devpostUrl)}>View on Devpost ${arrow}<span class="sr-only">: ${esc(w.name)}</span>${newTab(w.devpostUrl)}</a></div>
+      </article>`;
+  }
+
+  function renderWinners() {
+    const block = $("#winners");
+    if (!WINNERS.length) { block.hidden = true; return; }
+    const groups = new Map();
+    WINNERS.forEach((w) => {
+      const key = w.event || "";
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push({ ...w, builders: list(w.builders) });
+    });
+    $("#winner-groups").innerHTML = [...groups].map(([event, items]) => {
+      const podium = items.filter((w) => PLACE[Number(w.place)]).sort((a, b) => a.place - b.place);
+      const mentions = items.filter((w) => !PLACE[Number(w.place)]);
+      return `
+        <div class="winner-group">
+          ${event ? `<p class="eyebrow">${esc(event)}</p>` : ""}
+          ${podium.length ? `<div class="grid">${podium.map(winnerCard).join("")}</div>` : ""}
+          ${mentions.length ? `
+            <div class="hm-row">
+              <span class="hm-label" id="hm-${esc(slug(event))}">Honorable mentions</span>
+              <ul aria-labelledby="hm-${esc(slug(event))}">${mentions.map((w) => `<li><a class="pill-link" ${linkAttrs(w.devpostUrl)}>${esc(w.name)} ${arrow}${newTab(w.devpostUrl)}</a></li>`).join("")}</ul>
+            </div>` : ""}
+        </div>`;
+    }).join("");
+  }
+
+  /* ---------- Campus Leads ---------- */
+  function leadCard(l) {
+    const photo = l.photo
+      ? `<img class="avatar" src="${esc(l.photo)}" alt="Photo of ${esc(l.name)}" width="96" height="96" loading="lazy" decoding="async" data-initials="${esc(initials(l.name))}">`
+      : `<span class="avatar avatar-initials" aria-hidden="true">${esc(initials(l.name))}</span>`;
+    return `
+      <article class="card lead-card">
+        ${photo}
+        <h3 class="card-title">${esc(l.name)}</h3>
+        <p class="meta">${esc(l.role)}</p>
+        <div class="lead-links">
+          <a class="pill-link" ${linkAttrs(l.linkedin)}>LinkedIn<span class="sr-only">: ${esc(l.name)}</span>${newTab(l.linkedin)}</a>
+          <a class="pill-link" href="${esc(mailHref(l.email))}">Email<span class="sr-only"> ${esc(l.name)}</span></a>
+        </div>
+      </article>`;
+  }
+
+  /* ---------- Content source ---------- */
+  // PHASE 2 HOOK: swap this for Firestore reads (docs/PHASE2.md). It must resolve
+  // to arrays shaped like BUILDS and LIBRARY so the renderers below stay unchanged.
+  async function loadContent() {
+    return { builds: BUILDS, library: LIBRARY };
+  }
+
+  function initBuilds(raw) {
+    const builds = raw
+      .map((b, i) => ({
+        ...b,
+        id: b.id || slug(b.name) || `build-${i}`,
+        builders: list(b.builders).map((x) => (typeof x === "string" ? { name: x } : x)),
+        claudeTools: list(b.claudeTools),
+        otherTools: list(b.otherTools),
+        categories: list(b.categories),
+      }))
+      .sort((a, b) => (b.featured === true) - (a.featured === true) || byNewest(a, b));
+
+    const state = { cat: "", tool: "", q: "" };
+    const rows = [
+      { key: "cat", label: "Category", values: vocab(builds, (b) => b.categories, CATEGORY_ORDER) },
+      { key: "tool", label: "Claude product", values: vocab(builds, (b) => b.claudeTools, PRODUCT_ORDER) },
+    ];
+    const chips = $("#build-chips");
+    const search = $("#build-search");
+    const grid = $("#build-grid");
+
+    const matches = (b) => {
+      if (state.cat && !b.categories.some((c) => slug(c) === state.cat)) return false;
+      if (state.tool && !b.claudeTools.some((t) => slug(t) === state.tool)) return false;
+      const q = state.q.trim().toLowerCase();
+      return !q || [b.name, b.description, ...b.builders.map((x) => x.name)].join(" ").toLowerCase().includes(q);
+    };
+
+    function render() {
+      const shown = builds.filter(matches);
+      grid.innerHTML = shown.map(buildCard).join("");
+      $("#build-empty").hidden = shown.length > 0;
+      $("#build-count").textContent = shown.length === builds.length
+        ? plural(builds.length, "build")
+        : `${shown.length} of ${plural(builds.length, "build")}`;
+    }
+
+    // Filters live in the hash (#builds?cat=research&tool=claude-code) so a filtered view can be shared.
+    const PREFIX = "#builds?";
+    const filtered = () => Boolean(state.cat || state.tool || state.q.trim());
+    function readHash() {
+      if (!location.hash.startsWith(PREFIX)) return false;
+      const params = new URLSearchParams(location.hash.slice(PREFIX.length));
+      rows.forEach((row) => {
+        const v = params.get(row.key) || "";
+        state[row.key] = row.values.some((x) => slug(x) === v) ? v : "";
+      });
+      state.q = params.get("q") || "";
+      search.value = state.q;
+      syncChips(chips, state);
+      render();
+      return true;
+    }
+    function writeHash() {
+      const params = new URLSearchParams();
+      rows.forEach((row) => state[row.key] && params.set(row.key, state[row.key]));
+      if (state.q.trim()) params.set("q", state.q.trim());
+      const next = params.toString() ? PREFIX + params : "#builds";
+      if (location.hash === next) return;
+      try { history.replaceState(null, "", next); } catch { /* some browsers block this on file:// */ }
+    }
+
+    mountChips(chips, "builds", rows, state, () => { render(); writeHash(); });
+    let timer;
+    search.addEventListener("input", () => {
+      state.q = search.value;
+      render();
+      clearTimeout(timer);
+      timer = setTimeout(writeHash, 300);
+    });
+    window.addEventListener("hashchange", () => {
+      if (readHash()) $("#builds").scrollIntoView();
+      else if (location.hash === "#builds" && filtered()) writeHash();
+    });
+
+    grid.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-writeup]");
+      if (btn) openWriteup(builds.find((b) => b.id === btn.dataset.writeup), btn);
+    });
+
+    render();
+    if (readHash()) requestAnimationFrame(() => $("#builds").scrollIntoView());
+  }
+
+  function initLibrary(raw) {
+    const items = raw.map((r) => ({ ...r, products: list(r.products) })).sort(byNewest);
+    const state = { type: "", product: "" };
+    const rows = [
+      { key: "type", label: "Type", values: vocab(items, (r) => list(r.type), TYPE_ORDER) },
+      { key: "product", label: "Claude product", values: vocab(items, (r) => r.products, PRODUCT_ORDER) },
+    ];
+    function render() {
+      const shown = items.filter((r) =>
+        (!state.type || slug(r.type) === state.type) &&
+        (!state.product || r.products.some((p) => slug(p) === state.product)));
+      $("#library-grid").innerHTML = shown.map(libraryCard).join("");
+      $("#library-empty").hidden = shown.length > 0;
+      $("#library-status").textContent = plural(shown.length, "resource");
+    }
+    mountChips($("#library-chips"), "library", rows, state, render);
+    render();
+  }
+
+  /* ---------- Write-up modal ---------- */
+  const dialog = $("#writeup");
+  let opener = null;
+
+  function openWriteup(b, trigger) {
+    if (!b) return;
+    opener = trigger;
+    $("#writeup-title").textContent = b.name;
+    $("#writeup-meta").textContent = builtBy(b.builders);
+    $("#writeup-body").innerHTML = writeupBody(b);
+    document.documentElement.classList.add("modal-open");
+    dialog.showModal();
+    dialog.scrollTop = 0;
+    $("#writeup-close").focus();
+  }
+
+  $("#writeup-close").addEventListener("click", () => dialog.close());
+  // A click on the dialog element itself (not its content) is a click on the backdrop.
+  dialog.addEventListener("click", (e) => { if (e.target === dialog) dialog.close(); });
+  dialog.addEventListener("close", () => {
+    document.documentElement.classList.remove("modal-open");
+    if (opener) opener.focus();
+  });
+  dialog.addEventListener("keydown", (e) => {
+    if (e.key !== "Tab") return;
+    const focusable = $$('a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])', dialog);
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+
+  /* ---------- Nav: mobile menu and active section ---------- */
+  const toggle = $(".nav-toggle");
+  const menu = $("#nav-menu");
+  const menuOpen = () => toggle.getAttribute("aria-expanded") === "true";
+  function setMenu(open) {
+    toggle.setAttribute("aria-expanded", String(open));
+    menu.classList.toggle("is-open", open);
+  }
+  toggle.addEventListener("click", () => setMenu(!menuOpen()));
+  menu.addEventListener("click", (e) => { if (e.target.closest("a")) setMenu(false); });
+  document.addEventListener("click", (e) => { if (menuOpen() && !e.target.closest(".site-header")) setMenu(false); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && menuOpen()) { setMenu(false); toggle.focus(); }
+  });
+  window.matchMedia("(min-width: 760px)").addEventListener("change", (e) => { if (e.matches) setMenu(false); });
+
+  const navLinks = $$(".nav-links a");
+  const inView = new Set();
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((en) => (en.isIntersecting ? inView.add(en.target.id) : inView.delete(en.target.id)));
+    const current = navLinks.find((a) => inView.has(a.hash.slice(1)));
+    navLinks.forEach((a) => (a === current ? a.setAttribute("aria-current", "true") : a.removeAttribute("aria-current")));
+  }, { rootMargin: "-40% 0px -55% 0px" });
+  navLinks.forEach((a) => { const section = document.getElementById(a.hash.slice(1)); if (section) observer.observe(section); });
+
+  /* ---------- Go ---------- */
+  renderEvents();
+  renderWinners();
+  $("#lead-grid").innerHTML = LEADS.map(leadCard).join("");
+  loadContent().then(({ builds, library }) => {
+    initBuilds(builds);
+    initLibrary(library);
+  });
+})();
+</script>
+</body>
+</html>
