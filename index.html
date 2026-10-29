@@ -1128,7 +1128,14 @@ const TYPE_ORDER = ["Guide", "Video", "Workshop slides", "Prompt pack", "Docs"];
     });
 
     render();
-    if (readHash()) requestAnimationFrame(() => $("#builds").scrollIntoView());
+    // A shared filter link has no matching id for the browser to jump to, so jump
+    // to Builds ourselves: instantly, like a normal #section link on page load.
+    if (readHash()) {
+      const root = document.documentElement;
+      root.style.scrollBehavior = "auto";
+      $("#builds").scrollIntoView();
+      root.style.scrollBehavior = "";
+    }
   }
 
   function initLibrary(raw) {
