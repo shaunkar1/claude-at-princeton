@@ -33,7 +33,8 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:wght@400;600&display=swap"></noscript>
 
 <!-- TODO: confirm logo usage with our Anthropic club contact before adding any official marks.
-     Until then the wordmark stays text-only: no Anthropic logo, no Princeton shield. -->
+     Until then the wordmark stays text-only: no Anthropic logo, no Princeton shield. The load
+     splash's Nassau Hall drawing is an original illustration, not a university mark. -->
 <style>
 /* ---------- Design tokens (Direction A, "Warm Claude") ---------- */
 :root {
@@ -163,8 +164,24 @@ h2 { font-size: 40px; line-height: 1.15; letter-spacing: -0.01em; }
 .hero { padding: 96px 0 88px; }
 h1 { max-width: 8.5em; margin-top: 20px; font-size: clamp(44px, 7vw, 80px); font-weight: 400; line-height: 1.04; letter-spacing: -0.02em; }
 .accent { color: var(--clay-deep); }
+/* All verbs share one grid cell, so the slot is always as wide as the longest word and the
+   headline never reflows when the word changes. */
+.verb { display: inline-grid; color: var(--clay-deep); }
+.verb > span { grid-area: 1 / 1; opacity: 0; transform: translateY(.18em); transition: opacity .4s ease, transform .4s ease; }
+.verb > .is-active { opacity: 1; transform: none; }
+.verb > .is-leaving { transform: translateY(-.18em); }
 .lede { max-width: 36em; margin-top: 24px; font-size: 20px; color: var(--ink-2); }
 .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+
+/* ---------- Load splash ---------- */
+.splash { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 24px; background: var(--ink); color: var(--ivory); pointer-events: none; animation: splash-out .5s ease-in 1s forwards; }
+.splash-inner { display: grid; justify-items: center; gap: 28px; animation: splash-in .6s ease-out both; }
+.splash-art { width: min(380px, 76vw); height: auto; }
+.splash-mark { display: inline-flex; align-items: center; gap: .3em; font: 600 clamp(28px, 6vw, 44px)/1 var(--serif); }
+.splash-mark .dot { width: .6em; height: .6em; }
+@keyframes splash-in { from { opacity: 0; transform: translateY(10px); } }
+@keyframes splash-out { to { opacity: 0; visibility: hidden; } }
+@media (prefers-reduced-motion: reduce) { .splash { display: none; } }
 
 /* ---------- Cards ---------- */
 .card { border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); overflow: hidden; }
@@ -298,6 +315,23 @@ h1 { max-width: 8.5em; margin-top: 20px; font-size: clamp(44px, 7vw, 80px); font
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
+<!-- Load splash: an original line drawing of Nassau Hall over the wordmark. It fades out on a
+     CSS timer (so it can never get stuck), never blocks clicks, and is skipped for reduced motion. -->
+<div class="splash" id="splash" aria-hidden="true">
+  <div class="splash-inner">
+    <svg class="splash-art" viewBox="0 0 400 200" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M26 100L46 80H60M70 80H187M213 80H330M340 80H354L374 100"/>
+      <path d="M60 90V66H70V90M58 66H72M330 90V66H340V90M328 66H342"/>
+      <path d="M189 78.6V58H211V78.6M187 58H213M192 58V40H208V58M190.5 40H209.5M197 55V47A3 3 0 0 1 203 47V55M192 40C192 33 196 29 200 27C204 29 208 33 208 40M200 27V15M197 17.5H203"/>
+      <path d="M26 100H170M230 100H374M30 100V190M370 100V190M170 96V190M230 96V190M164 96H236L200 71Z"/>
+      <circle cx="200" cy="87" r="4"/>
+      <path d="M30 178H170M230 178H370M192 190V168A8 8 0 0 1 208 168V190M185 190V186H215V190M8 190H392"/>
+      <path d="M38.75 108h10v14h-10zM38.75 115h10M38.75 131h10v14h-10zM38.75 138h10M38.75 156h10v16h-10zM38.75 164h10M57.5 108h10v14h-10zM57.5 115h10M57.5 131h10v14h-10zM57.5 138h10M57.5 156h10v16h-10zM57.5 164h10M76.25 108h10v14h-10zM76.25 115h10M76.25 131h10v14h-10zM76.25 138h10M76.25 156h10v16h-10zM76.25 164h10M95 108h10v14h-10zM95 115h10M95 131h10v14h-10zM95 138h10M95 156h10v16h-10zM95 164h10M113.75 108h10v14h-10zM113.75 115h10M113.75 131h10v14h-10zM113.75 138h10M113.75 156h10v16h-10zM113.75 164h10M132.5 108h10v14h-10zM132.5 115h10M132.5 131h10v14h-10zM132.5 138h10M132.5 156h10v16h-10zM132.5 164h10M151.25 108h10v14h-10zM151.25 115h10M151.25 131h10v14h-10zM151.25 138h10M151.25 156h10v16h-10zM151.25 164h10M238.75 108h10v14h-10zM238.75 115h10M238.75 131h10v14h-10zM238.75 138h10M238.75 156h10v16h-10zM238.75 164h10M257.5 108h10v14h-10zM257.5 115h10M257.5 131h10v14h-10zM257.5 138h10M257.5 156h10v16h-10zM257.5 164h10M276.25 108h10v14h-10zM276.25 115h10M276.25 131h10v14h-10zM276.25 138h10M276.25 156h10v16h-10zM276.25 164h10M295 108h10v14h-10zM295 115h10M295 131h10v14h-10zM295 138h10M295 156h10v16h-10zM295 164h10M313.75 108h10v14h-10zM313.75 115h10M313.75 131h10v14h-10zM313.75 138h10M313.75 156h10v16h-10zM313.75 164h10M332.5 108h10v14h-10zM332.5 115h10M332.5 131h10v14h-10zM332.5 138h10M332.5 156h10v16h-10zM332.5 164h10M351.25 108h10v14h-10zM351.25 115h10M351.25 131h10v14h-10zM351.25 138h10M351.25 156h10v16h-10zM351.25 164h10M180 108h10v14h-10zM180 115h10M180 131h10v14h-10zM180 138h10M210 108h10v14h-10zM210 115h10M210 131h10v14h-10zM210 138h10"/>
+    </svg>
+    <p class="splash-mark"><span class="dot"></span>Claude@Princeton</p>
+  </div>
+</div>
+
 <header class="site-header">
   <nav class="nav wrap" aria-label="Main">
     <a class="wordmark" href="#top"><span class="dot" aria-hidden="true"></span>Claude@Princeton</a>
@@ -323,7 +357,12 @@ h1 { max-width: 8.5em; margin-top: 20px; font-size: clamp(44px, 7vw, 80px); font
   <section class="hero" aria-labelledby="hero-title">
     <div class="wrap">
       <p class="eyebrow">Claude Builder Club · Princeton University</p>
-      <h1 id="hero-title">What Princeton is building with <span class="accent">Claude</span></h1>
+      <!-- The verb cycles through the words in .verb (edit them here; the first one shows without JS).
+           Screen readers get the static sentence instead of the animation. -->
+      <h1 id="hero-title">
+        <span class="sr-only">What Princeton is building with Claude</span>
+        <span aria-hidden="true">What Princeton is <span class="verb" id="hero-verb"><span class="is-active">building</span><span>creating</span><span>learning</span></span> with <span class="accent">Claude</span></span>
+      </h1>
       <p class="lede">A showcase of projects, guides and events from Princeton students building with Claude Code and other AI tools.</p>
       <div class="cta-row">
         <a class="btn btn-clay" href="#todo" data-link="shareBuild">Share your build</a>
@@ -1213,6 +1252,27 @@ const TYPE_ORDER = ["Guide", "Video", "Workshop slides", "Prompt pack", "Docs"];
     navLinks.forEach((a) => (a === current ? a.setAttribute("aria-current", "true") : a.removeAttribute("aria-current")));
   }, { rootMargin: "-40% 0px -55% 0px" });
   navLinks.forEach((a) => { const section = document.getElementById(a.hash.slice(1)); if (section) observer.observe(section); });
+
+  /* ---------- Load splash and hero verb ---------- */
+  const splash = $("#splash");
+  if (splash) {
+    const removeSplash = () => splash.remove();
+    splash.addEventListener("animationend", (e) => { if (e.target === splash) removeSplash(); });
+    setTimeout(removeSplash, 2500); // backup for tabs that open in the background
+  }
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const verbs = $$("#hero-verb > span");
+  let verbIndex = 0;
+  setInterval(() => {
+    if (reduceMotion.matches || document.hidden || verbs.length < 2) return;
+    const prev = verbs[verbIndex];
+    verbIndex = (verbIndex + 1) % verbs.length;
+    prev.classList.remove("is-active");
+    prev.classList.add("is-leaving");
+    verbs[verbIndex].classList.add("is-active");
+    setTimeout(() => prev.classList.remove("is-leaving"), 450);
+  }, 2500);
 
   /* ---------- Go ---------- */
   renderEvents();
