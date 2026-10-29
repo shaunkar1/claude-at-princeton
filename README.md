@@ -2,7 +2,7 @@
 
 The community site for Claude@Princeton, Princeton's Claude Builder Club (supported by Anthropic). It showcases what Princeton students are building with Claude Code and other AI tools, plus the club's guides, events, hackathon winners and campus leads.
 
-Live at **https://claudeatprinceton.org**
+Live at **https://shaunkar1.github.io/claude-at-princeton/** for now. It moves to **https://claudeatprinceton.org** once that domain is registered (see "Switch to the custom domain" below).
 
 ## What's here
 
@@ -35,6 +35,10 @@ Submissions come in through external forms (URLs in `LINKS`). There's no backend
 ## Deploy
 
 GitHub Pages serves the `main` branch from the repo root. Every push to `main` goes live in a minute or two.
+
+### Switch to the custom domain
+
+The site is served from the github.io address until `claudeatprinceton.org` is registered. To move it over, revert the commit "Serve from github.io until the domain is registered" (it restores `CNAME`, the canonical and social-card URLs, and the 404 page's paths), push, enter `claudeatprinceton.org` under the repo's Settings → Pages → Custom domain, and set the DNS records below.
 
 ### Custom domain DNS
 
