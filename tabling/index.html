@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tabling sign — Claude@Princeton</title>
+<meta name="description" content="Printable sign for Claude@Princeton tabling, with a QR code to the sign-up form.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#FAF9F5">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:wght@400;600&display=swap">
+<style>
+:root {
+  --ivory: #FAF9F5;
+  --paper: #FFFFFF;
+  --sand: #F3F0E8;
+  --line: #E8E4DA;
+  --ink: #141413;
+  --ink-2: #4A4943;
+  --ink-3: #6B6A63;
+  --clay: #D97757;
+  --clay-deep: #B8532F;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@page { size: letter; margin: 0.5in; }
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; background: var(--sand); color: var(--ink-2); font: 400 16px/1.5 var(--sans); -webkit-font-smoothing: antialiased; }
+:focus-visible { outline: 2px solid var(--clay-deep); outline-offset: 3px; }
+
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; width: min(8.5in, 100% - 32px); margin: 24px auto 16px; }
+.toolbar p { margin: 0; }
+.toolbar a { color: var(--ink); text-underline-offset: 4px; }
+.btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 22px; border: 0; border-radius: 999px; background: var(--ink); color: var(--ivory); font: 500 16px/1 var(--sans); cursor: pointer; }
+.btn:hover { background: var(--ink-2); }
+
+/* One US Letter page. On screen it previews as a sheet; in print it fills the page. */
+.sheet { display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 0.25in; width: min(8.5in, 100% - 32px); aspect-ratio: 8.5 / 11; margin: 0 auto 48px; padding: 0.7in 0.6in 0.6in; border: 1px solid var(--line); border-radius: 16px; background: var(--paper); text-align: center; }
+.mark { display: inline-flex; align-items: center; gap: 12px; margin: 0; color: var(--ink); font: 600 clamp(22px, 4vw, 30px)/1 var(--serif); }
+.dot { width: 0.6em; height: 0.6em; border-radius: 50%; background: var(--clay); }
+.art { width: 72%; height: auto; }
+h1 { margin: 0; color: var(--ink); font: 400 clamp(34px, 7vw, 60px)/1.05 var(--serif); letter-spacing: -0.02em; }
+.accent { color: var(--clay-deep); }
+.lede { max-width: 26em; margin: 14px auto 0; font-size: clamp(15px, 2.3vw, 20px); }
+.qr { width: min(2.7in, 52%); height: auto; }
+.url { margin: 0; color: var(--ink); font-size: clamp(15px, 2.3vw, 20px); }
+.url strong { font-weight: 600; overflow-wrap: anywhere; }
+
+@media print {
+  body { background: none; }
+  .toolbar { display: none; }
+  .sheet { width: auto; height: 10in; aspect-ratio: auto; margin: 0; padding: 0.3in 0.2in 0.1in; border: 0; border-radius: 0; }
+  .dot, .accent { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <p>Print this for tabling. The QR code opens the sign-up form. <a href="../index.html">Back to the site</a></p>
+  <button class="btn" type="button" id="print">Print</button>
+</div>
+<main class="sheet">
+  <p class="mark"><span class="dot" aria-hidden="true"></span>Claude@Princeton</p>
+  <img class="art" src="../assets/nassau-hall.svg" alt="" width="400" height="200">
+  <div>
+    <h1>Build something with <span class="accent">Claude</span></h1>
+    <!-- TODO: confirm the credits wording with Anthropic before printing. -->
+    <p class="lede">Join Princeton's Claude Builder Club for workshops, demo nights and buildathons, plus free Claude Pro and API credits at events.</p>
+  </div>
+  <img class="qr" src="../assets/join-qr.svg" alt="QR code that opens the Claude@Princeton sign-up form" width="300" height="300">
+  <p class="url">Scan, or visit <strong id="join-url">shaunkar1.github.io/claude-at-princeton/join</strong></p>
+</main>
+<script>
+  document.getElementById("print").addEventListener("click", () => window.print());
+  // Show the short link for wherever this page is hosted, so it reads claudeatprinceton.org/join once
+  // the domain is live. The printed QR code keeps working either way: GitHub redirects the old address.
+  if (location.protocol.startsWith("http")) {
+    document.getElementById("join-url").textContent = location.host + location.pathname.replace(/tabling\/(index\.html)?$/, "") + "join";
+  }
+</script>
+</body>
+</html>
