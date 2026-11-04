@@ -1,37 +1,37 @@
 # Adding content
 
-The site has no backend yet. Submissions come in through external forms, and an officer copies each one into `index.html` and pushes. It takes about five minutes per entry.
+The site is deliberately bare for now: the next event, the "Share your artifact" form (plus a gallery once artifacts are approved) and the campus leads. Officers edit three blocks at the top of the `<script>` in `index.html`: `LINKS`, `EVENTS` and `LEADS`. Each has a commented example entry right above it. The sign-up form's URL is the one exception: it lives in `join/index.html` (see "Tabling kit" below).
 
-All content lives in blocks at the top of the `<script>` in `index.html`: `LINKS`, `BUILDS`, `LIBRARY`, `EVENTS`, `WINNERS`, `LEADS` and `FAQ`. Each block has a commented example entry right above it. The one exception is the sign-up form's URL, which lives in `join/index.html` (see "Tabling kit" below).
+Artifacts don't need any code changes. Members submit them on the site, and they land in the submissions Google Sheet (see "Reviewing artifacts").
 
-## The five steps
+## Editing events, leads and links
 
-1. **Read the submission.** Open the form's responses (the "Share your build", "Suggest a resource" or "Join" form linked from `LINKS`). Check that it's a Princeton student's work and that the links open.
-
-2. **Add any images to `/assets`.**
-   - Build screenshots go in `assets/builds/`, named after the build's `id` (for example `assets/builds/project-name.png`). Use 16:9, about 1600×900, PNG or JPG, under 300 KB.
-   - Lead photos go in `assets/leads/` (for example `assets/leads/first-last.jpg`). Use a square at least 192×192.
-   - Use relative paths (`assets/...`, no leading slash) so the site also works when opened from disk.
-
-3. **Paste one object into the right array.** Copy the example from the comment above the array, paste it inside the `[ ]`, and fill in the fields. Mind the commas between objects. Write plain text: the site escapes everything, so you don't need to worry about quotes or `<` in descriptions. Use `"YYYY-MM-DD"` for dates and 24-hour `"HH:MM"` for event times (Princeton time). Delete the `[Placeholder]` entries once real ones exist.
-
-4. **Preview locally.** From the repo folder run `python3 -m http.server 8000` and open <http://localhost:8000>. Check the new card, the filters it shows up under, and the "How I built this" modal. If the page goes blank, the browser console will point to a missing comma or quote.
-
-5. **Commit and push to `main`.** For example `git commit -am "Add <project name> to builds" && git push`. GitHub Pages republishes in a minute or two. Reload claudeatprinceton.org to confirm.
+1. **Paste one object into the right array.** Copy the example from the comment above the array, paste it inside the `[ ]`, and fill in the fields. Mind the commas between objects. Write plain text: the site escapes everything, so quotes and `<` are fine. Use `"YYYY-MM-DD"` for dates and 24-hour `"HH:MM"` for event times (Princeton time).
+2. **Add any photos to `/assets`.** Lead photos go in `assets/leads/` (for example `assets/leads/first-last.jpg`), square and at least 192×192. Use relative paths (`assets/...`, no leading slash).
+3. **Preview locally.** From the repo folder run `python3 -m http.server 8000` and open <http://localhost:8000>. If the page goes blank, the browser console will point to a missing comma or quote.
+4. **Commit and push to `main`.** GitHub Pages republishes in a minute or two.
 
 ## Field notes
 
-| Array | Notes |
+| Block | Notes |
 | --- | --- |
-| `BUILDS` | `id` must be unique, lowercase with dashes. `featured: true` pins a build to the front (leads only). Builds sort by featured, then newest `addedAt`. `claudeTools` and `categories` become the filter chips, so reuse the existing spellings. |
-| `LIBRARY` | `type` is one of Guide, Video, Workshop slides, Prompt pack, Docs. Cards open `url` in a new tab. |
-| `EVENTS` | Upcoming and past are worked out from `date` and `end` automatically, so there's nothing to move when an event ends. The soonest upcoming event gets the dark "Next up" card with a countdown. Locations link to a map search on their own; set `mapUrl` to use a specific map link, and online events (Zoom, "Online", "TBD") get no map link. |
-| `WINNERS` | `place` is 1, 2 or 3 for the podium, or `"HM"` for honorable mentions. Entries are grouped by `event`. An empty array hides the whole block. |
-| `LEADS` | Shown in array order. `photo: ""` shows initials. |
-| `FAQ` | Questions at the bottom of About, in array order. Plain text; separate paragraphs with a blank line. An empty array hides the block. |
-| `LINKS` | Any value that still starts with `TODO` renders as a dead link, so nothing breaks before the forms exist. Leave `join` as `join/index.html`; the form URL goes in that file. `community` is the group chat. |
+| `EVENTS` | Only upcoming events show. Each one drops off by itself once it ends, so there's nothing to clean up. The soonest gets the dark "Next up" card with a countdown. `rsvpUrl` is optional and adds an RSVP button. With no upcoming events, the section says nothing is scheduled and points to the sign-up form. |
+| `LEADS` | Shown in array order. `photo: ""` shows initials. LinkedIn and email buttons only appear once they're filled in. |
+| `LINKS` | A value that is empty or still starts with `TODO` is hidden rather than shown as a dead link. Leave `join` as `join/index.html`; the form URL goes in that file. `community` is the group chat. |
+| `SUBMISSIONS_API` | The Apps Script web app URL (ends in `/exec`). Set it once; see README.md, "Artifact submissions". |
 
-Every build's write-up has its own link, `#build/<id>`, and the "Copy link" button in the write-up copies it. Builders can share that link directly, so pick an `id` you won't need to change.
+## Reviewing artifacts
+
+Submissions go to the **Claude@Princeton artifact submissions** Google Sheet, one row each.
+
+- **New rows start unapproved.** The submitter's page (`#artifact/<id>`) works right away and says it's waiting for review.
+- **Approve** by ticking the Approved box. The artifact joins the gallery on the next page load, newest first. The gallery section and its nav link only appear once at least one artifact is approved.
+- **Edit** a title or description by editing its cell. Changes show on the next page load.
+- **Take one down** by deleting its row. Its link then says the artifact couldn't be found.
+- **Email (private)** is never sent to the site; only people with access to the Sheet see it.
+- Don't reorder or rename the columns; the script reads them by position.
+
+The site only accepts artifact links on `claude.ai` (and the older `claude.site`), which is what Claude's Publish button gives.
 
 ## Tabling kit
 
@@ -39,4 +39,6 @@ Every build's write-up has its own link, `#build/<id>`, and the "Copy link" butt
 - **Printed sign:** open `/tabling/` on the live site and press Print. It's one US Letter page with the Nassau Hall drawing, a short pitch and the QR code.
 - **QR code:** `assets/join-qr.svg` points at the site's `/join/` page. Regenerate it only if the site's address changes: `swift docs/make-qr.swift "https://claudeatprinceton.org/join/" assets/join-qr.svg` (macOS, run from the repo root).
 
-New categories, products or types appear as chips automatically. To control their order, edit `CATEGORY_ORDER`, `PRODUCT_ORDER` and `TYPE_ORDER` just below the content blocks.
+## Bringing back the bigger site
+
+The fuller version, with Builds and filters, the Claude Library, past events with calendar files, hackathon winners and the FAQ, is in git history at commit `526e027`. Copy sections back from there when the club has content for them.

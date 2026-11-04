@@ -1,6 +1,6 @@
 # Claude@Princeton
 
-The community site for Claude@Princeton, Princeton's Claude Builder Club (supported by Anthropic). It showcases what Princeton students are building with Claude Code and other AI tools, plus the club's guides, events, hackathon winners and campus leads.
+The community site for Claude@Princeton, Princeton's Claude Builder Club (supported by Anthropic). It's deliberately bare for now: the next event, a "Share your artifact" form that gives each member's artifact its own page, a gallery of approved artifacts, and the campus leads.
 
 Live at **https://shaunkar1.github.io/claude-at-princeton/** for now. It moves to **https://claudeatprinceton.org** once that domain is registered (see "Switch to the custom domain" below).
 
@@ -8,18 +8,19 @@ Live at **https://shaunkar1.github.io/claude-at-princeton/** for now. It moves t
 
 ```
 index.html            The whole site: one file, vanilla HTML/CSS/JS, no build step
+apps-script/Code.gs   Backend for "Share your artifact": runs inside the submissions Google Sheet
 join/index.html       The short link (/join): holds the sign-up form URL and forwards to it
 tabling/index.html    Printable tabling sign with the QR code (officers only, not linked from the site)
 404.html              Not-found page (GitHub Pages serves it for any missing URL)
 assets/               favicon, social card, join QR code, Nassau Hall drawing, screenshots, lead photos
-docs/ADDING_CONTENT.md  How officers add builds, resources, events, winners, leads and FAQs
-docs/PHASE2.md        Plan for live submissions (Firebase), not built yet
+docs/ADDING_CONTENT.md  How officers edit events, leads and links, and review artifacts
+docs/PHASE2.md        Older plan for a Firebase backend, not built
 docs/og-image.html    Source for assets/og-image.png
 docs/make-qr.swift    Regenerates assets/join-qr.svg (macOS)
 CNAME                 Custom domain for GitHub Pages (back once the domain is live)
 ```
 
-The only external resource is Google Fonts (Source Serif 4 and Inter). There are no trackers or analytics.
+External resources: Google Fonts (Source Serif 4 and Inter), and the Apps Script web app that stores artifact submissions in a Google Sheet. There are no trackers or analytics.
 
 ## Run it locally
 
@@ -31,9 +32,22 @@ Then open http://localhost:8000. Opening `index.html` straight from disk also wo
 
 ## Add content
 
-All content lives in arrays at the top of the `<script>` in `index.html`: `LINKS`, `BUILDS`, `LIBRARY`, `EVENTS`, `WINNERS`, `LEADS` and `FAQ`. Each has a commented example entry. Paste one object into an array, preview, and push. You never touch layout code. The full walkthrough is in [docs/ADDING_CONTENT.md](docs/ADDING_CONTENT.md).
+Content lives in blocks at the top of the `<script>` in `index.html`: `LINKS`, `SUBMISSIONS_API`, `EVENTS` and `LEADS`. Each has a commented example entry. Paste one object into an array, preview, and push. You never touch layout code. The sign-up form's URL is in `join/index.html`. The full walkthrough, including how to review artifacts, is in [docs/ADDING_CONTENT.md](docs/ADDING_CONTENT.md).
 
-Submissions come in through external forms (URLs in `LINKS`; the sign-up form's URL is in `join/index.html`). There's no backend in v1.
+The fuller site (Builds, Library, past events, hackathon winners, FAQ) is in git history at commit `526e027`, ready to bring back section by section.
+
+## Artifact submissions
+
+The "Share your artifact" form posts to a Google Apps Script web app, which appends a row to the **Claude@Princeton artifact submissions** Google Sheet (owned by sk4195@princeton.edu). Each submission gets its own page right away at `#artifact/<id>`, marked as waiting for review. Ticking **Approved** in the Sheet adds it to the gallery. The Sheet's Email column is never sent to the site.
+
+Setting it up (already done once; repeat only for a new Sheet):
+
+1. In the Sheet, open **Extensions → Apps Script**, replace `Code.gs` with [apps-script/Code.gs](apps-script/Code.gs) and save.
+2. Pick **setup** in the function menu and click **Run**. Approve the permissions it asks for.
+3. **Deploy → New deployment → Web app**, with **Execute as: Me** and **Who has access: Anyone**. Copy the web app URL (it ends in `/exec`).
+4. Put that URL in `SUBMISSIONS_API` in `index.html` and push.
+
+To change the script later, edit it in the Apps Script editor (keep [apps-script/Code.gs](apps-script/Code.gs) in sync), then use **Deploy → Manage deployments → Edit → Version: New version**. That keeps the same URL, so the site needs no change.
 
 ## Deploy
 
@@ -82,11 +96,8 @@ swift docs/make-qr.swift "https://claudeatprinceton.org/join/" assets/join-qr.sv
 
 - Confirm logo usage with our Anthropic club contact before adding any official marks. The wordmark is text-only for now.
 - Confirm the "free Claude Pro and API credits" wording with Anthropic.
-- Put the sign-up form URL in `join/index.html`.
-- Fill in the other form URLs, the group chat link and the contact email in `LINKS`.
-- Confirm the draft answers in `FAQ`.
-- Add the other campus leads, plus photos in `assets/leads/`.
-- Replace the `[Placeholder]` entries with real content.
+- Fill in the group chat link and the contact email in `LINKS`.
+- Add LinkedIn, email and photos for the campus leads.
 
 ## License
 

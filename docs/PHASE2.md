@@ -1,6 +1,8 @@
 # Phase 2 plan: live submissions
 
-Not built yet. v1 is a static page whose content lives in `index.html`. Phase 2 lets Princeton students submit builds and library entries themselves, so officers stop copying form responses by hand.
+Not built. Artifact submissions went a simpler way instead: a Google Sheet behind an Apps Script web app (README.md, "Artifact submissions"). This plan stays for reference if the club later wants sign-in, per-user editing and uploads. Note that Princeton Google accounts can't create Google Cloud projects, so a Firebase project would need a personal or club-owned Google account.
+
+The original plan lets Princeton students submit builds and library entries themselves, so officers stop copying form responses by hand. The `loadContent()` hook it mentions was removed with the bare site; restore it from commit `526e027` if this is picked up.
 
 ## Goals
 
