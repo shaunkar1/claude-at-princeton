@@ -178,7 +178,7 @@ h1 { max-width: 8.5em; margin-top: 20px; font-size: clamp(44px, 7vw, 80px); font
 .card-title { font: 600 22px/1.25 var(--serif); color: var(--ink); }
 .card-body { display: flex; flex: 1; flex-direction: column; gap: 10px; padding: 24px 24px 12px; }
 .card-actions { display: flex; flex-wrap: wrap; gap: 0 24px; margin-top: auto; }
-.clamp-3 { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; }
+.clamp-5 { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 5; line-clamp: 5; }
 .link-btn { font-size: 16px; }
 
 .empty { display: grid; justify-items: center; gap: 20px; padding: 48px 24px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); text-align: center; }
@@ -200,6 +200,7 @@ h1 { max-width: 8.5em; margin-top: 20px; font-size: clamp(44px, 7vw, 80px); font
 
 /* ---------- Artifacts gallery ---------- */
 .artifact-card { display: flex; flex-direction: column; }
+.artifact-why { padding-top: 10px; border-top: 1px solid var(--line); font-size: 15px; }
 
 /* ---------- Share your artifact ---------- */
 .submit-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); align-items: start; gap: 48px; }
@@ -309,8 +310,8 @@ h1 { max-width: 8.5em; margin-top: 20px; font-size: clamp(44px, 7vw, 80px); font
     </button>
     <div class="nav-menu" id="nav-menu">
       <ul class="nav-links">
-        <li><a href="#events">Events</a></li>
         <li hidden><a href="#artifacts">Artifacts</a></li>
+        <li><a href="#events">Events</a></li>
         <li><a href="#submit">Share your artifact</a></li>
         <li><a href="#leads">Campus Leads</a></li>
       </ul>
@@ -337,6 +338,20 @@ h1 { max-width: 8.5em; margin-top: 20px; font-size: clamp(44px, 7vw, 80px); font
     </div>
   </section>
 
+  <!-- The approved rows of the submissions Sheet. SAVED_ARTIFACTS shows them right away while the Sheet loads. -->
+  <section id="artifacts" class="section" aria-labelledby="artifacts-title" hidden>
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2 id="artifacts-title">What members built</h2>
+          <p class="section-sub">Everything members have shared so far, built with Claude.</p>
+        </div>
+        <a class="btn btn-outline" href="#submit">Share yours</a>
+      </div>
+      <div class="grid" id="artifact-grid"></div>
+    </div>
+  </section>
+
   <section id="events" class="section" aria-labelledby="events-title">
     <div class="wrap">
       <div class="section-head">
@@ -344,20 +359,6 @@ h1 { max-width: 8.5em; margin-top: 20px; font-size: clamp(44px, 7vw, 80px); font
       </div>
       <div id="next-event"></div>
       <div class="grid events-grid" id="event-grid"></div>
-    </div>
-  </section>
-
-  <!-- Shows itself once a lead approves the first artifact in the submissions Sheet. -->
-  <section id="artifacts" class="section" aria-labelledby="artifacts-title" hidden>
-    <div class="wrap">
-      <div class="section-head">
-        <div>
-          <h2 id="artifacts-title">Artifacts</h2>
-          <p class="section-sub">What members have built with Claude.</p>
-        </div>
-        <a class="btn btn-outline" href="#submit">Share yours</a>
-      </div>
-      <div class="grid" id="artifact-grid"></div>
     </div>
   </section>
 
@@ -388,8 +389,8 @@ h1 { max-width: 8.5em; margin-top: 20px; font-size: clamp(44px, 7vw, 80px); font
           </div>
           <div class="field">
             <label for="f-url">Link to your artifact</label>
-            <p class="hint" id="f-url-hint">In Claude, open the artifact and click Publish. It starts with https://claude.ai/</p>
-            <input id="f-url" name="url" type="url" maxlength="500" required inputmode="url" autocomplete="off" placeholder="https://claude.ai/public/artifacts/…" aria-describedby="f-url-hint f-url-error">
+            <p class="hint" id="f-url-hint">In Claude, open the artifact and click Publish, then check the link opens in a private window. It starts with https://claude.ai/</p>
+            <input id="f-url" name="url" type="url" maxlength="500" required inputmode="url" autocomplete="off" placeholder="https://claude.ai/artifact/…" aria-describedby="f-url-hint f-url-error">
             <p class="error" id="f-url-error" hidden></p>
           </div>
           <div class="field">
@@ -399,8 +400,8 @@ h1 { max-width: 8.5em; margin-top: 20px; font-size: clamp(44px, 7vw, 80px); font
             <p class="error" id="f-description-error" hidden></p>
           </div>
           <div class="field">
-            <label for="f-story">How did you build it? <span class="optional">(optional)</span></label>
-            <p class="hint" id="f-story-hint">What you asked for, what you changed along the way, what surprised you.</p>
+            <label for="f-story">Why and how did you build it? <span class="optional">(optional)</span></label>
+            <p class="hint" id="f-story-hint">Why you made it, what you asked for, what you changed along the way.</p>
             <textarea id="f-story" name="story" maxlength="3000" rows="4" aria-describedby="f-story-hint"></textarea>
           </div>
           <div class="field">
@@ -514,6 +515,29 @@ const LINKS = {
    submissions" Google Sheet; tick Approved there to add one to the gallery.
 */
 const SUBMISSIONS_API = "https://script.google.com/macros/s/AKfycbxEF117O1-VBecM68tQNOQPuS-l7FNSGP1PLnpKxoLxgrPE2-Oha1V7k95BISb_U3G27w/exec";
+
+/* SAVED_ARTIFACTS: a copy of the approved rows, shown right away because the Sheet can take
+   several seconds to answer. The Sheet replaces it as soon as it does, so edits and approvals
+   there still go live without touching this. Refresh the copy now and then; never add emails.
+*/
+const SAVED_ARTIFACTS = [
+  {"id": "china-s-bond-market-wcgcz", "submittedAt": "2026-11-05T22:25:26.927Z", "approved": true, "title": "China's Bond Market", "name": "William Li", "url": "https://claude.ai/share/cf64beda-c159-4aac-8a72-ddef2251d8f9", "description": "An interactive site on China's corporate bond market since 2012, with a timeline, a bond-price demo and a comparison with the United States.", "story": "Built for a class on China's monetary and fiscal policies, to better visualize the bond market and how it affects consumers.", "prompt": "make an interactive website about corporate bonds in the chinese monetary markets, explaining clearly the effects of corporate bond issuances and the way that it affects consumers in china relative ot the usa from 2012 to present day. make it interactive as well"},
+  {"id": "explain-it-like-i-m-4kd5d", "submittedAt": "2026-11-05T22:18:48.513Z", "approved": true, "title": "Explain It Like I’m…", "name": "Jesse Bejarano", "url": "https://claude.ai/artifact/S1s7VqCek41fKiZkftPBjr", "description": "Enter a topic or notes, and Claude explains it at different levels.", "story": "Built to make hard concepts easier to learn by rewriting them at a simpler reading level.", "prompt": ""},
+  {"id": "ib-banking-prep-adjvr", "submittedAt": "2026-11-05T22:18:43.558Z", "approved": true, "title": "IB Banking Prep", "name": "Nico Vanichpong-Barbosa", "url": "", "description": "Sets a timeline for prepping technicals and behaviorals, and runs HireVue-style interview practice.", "story": "Built to get ready for investment banking interviews by the end of November, working around an existing calendar. Nico gave Claude in-depth context on the situation and on where things needed to be a month out.", "prompt": "I think an artifact would help me navigate this process. Similar context; I need to master all of my technicals as well as my STAR stories for investment banking. I would like to get it done by the end of november, but i dont want the schedule of work to overlap with calendar events i have made and will make. I would like to complete all of my wall street prep as a part of that by that same deadline. I also have scholars of finance prework that takes about 1.5 hours per week, but i am 1.5 weeks behind on. I attached again the different units of wall street prep. Do research on how that is structured/what each portion covers and help provide me a resource to test that I know what I am talking about at the end of each day as well as once a week on if ive learned the week's work. If possible i think it should be a tool similar to a hireview that gives me a prompt and then records my 90 second response and gives feedback on how i did in terms of content and whether it was concise/efficient answer. I also want tools to help me prepare my STAR stories and test whether I can apply it to certain interview questions in that same kind of recording/feedback setting."},
+  {"id": "handwriting-compiler-m7rhn", "submittedAt": "2026-11-05T22:16:44.270Z", "approved": true, "title": "Handwriting Compiler", "name": "Michael", "url": "", "description": "Compiles LaTeX so the result looks handwritten.", "story": "Built to get the look of handwritten notes from typed LaTeX.", "prompt": ""},
+  {"id": "recipe-remix-k568n", "submittedAt": "2026-11-05T22:16:13.684Z", "approved": true, "title": "Recipe Remix", "name": "Reeti R", "url": "", "description": "Changes a recipe to match your preferences.", "story": "Built to make any recipe easier to adapt to what you like to eat.", "prompt": ""},
+  {"id": "joshpit-website-d95du", "submittedAt": "2026-11-05T22:14:02.989Z", "approved": true, "title": "The Josh Pit", "name": "Lleyton Hutfilz", "url": "https://claude.ai/artifact/YadWahKNSAjKr4KBoyu3Vq", "description": "A website for an intramural dodgeball team, with its record, schedule, rules and a tryout application.", "story": "Built to give the team one home online and to recruit new players.", "prompt": ""},
+  {"id": "princeton-events-radar-g9u27", "submittedAt": "2026-11-05T22:13:28.035Z", "approved": true, "title": "Princeton Events Radar", "name": "Manuel Garcia San Millan", "url": "https://claude.ai/artifact/CDAjwbRAJ7qn9eNMv4ZjeX", "description": "Upcoming quant, AI/ML, venture capital, math competition, game theory, poker and chess events pulled from your inbox, sorted by date.", "story": "Built to pull the useful events out of a crowded inbox, including RockyWire, starting with the pre-professional and math events Manuel follows.", "prompt": "Hello, I am a Princeton student. I want to build an artifact to sort through my emails to filter all of the useful events coming up which I will be interested in. For now, let us do the pre professional + math ones which interest me which are mainly quant, ai/ml, venture capital and math comp / game theory/ pookerr /chess. Make sure it tracks my email including rockywire. Make it into a dashboard that is one html, no passcode."},
+  {"id": "solids-of-revolution-v5t3f", "submittedAt": "2026-11-05T22:08:59.260Z", "approved": true, "title": "Solids of Revolution", "name": "Yahia AlOmari", "url": "https://claude.ai/artifact/Et8zbELRHx7x8cvFDeqAbQ", "description": "Type an upper f(x), a lower g(x) and bounds, pick a horizontal or vertical axis, and see the area rotate in 3D.", "story": "Built while studying volumes and surface areas of solids of revolution in MAT 104. Yahia first asked Claude whether it could build this, then gave it the full prompt.", "prompt": "I am a princeton student taking mat 104. I am studying revolution of shapes around x and y axis, and finding the volume and surface area of them. Build me an app that helps me visualize in 3D the rotation of functions around different axes. Enable me to input the function I want and the axis (vertical or horizontal x = a y = b). Allow me to bound my area with more than one function and visualize the different methods. build it as an artifact with one file that i can open now and online."},
+  {"id": "flappy-birtd-egpg7", "submittedAt": "2026-11-05T22:04:22.653Z", "approved": true, "title": "Tiger Hop", "name": "Jaydon Sun", "url": "https://claude.ai/artifact/A7To6uUQxPsrJo6u7F1f1Q", "description": "A Flappy Bird-style game with a Princeton orange-and-black look. Tap or press Space to hop and chase your best score.", "story": "Built as a fun first artifact that anyone can open and play right away.", "prompt": ""},
+  {"id": "nba-drmtx", "submittedAt": "2026-11-05T22:02:19.850Z", "approved": true, "title": "NBA Fantasy Team Improver", "name": "Isaac Chan", "url": "", "description": "Helps improve an NBA fantasy team.", "story": "Built for Isaac's own NBA fantasy team.", "prompt": ""}
+];
+
+/* MERGED_ARTIFACTS: links to submissions that were merged into another row keep working. */
+const MERGED_ARTIFACTS = new Map([
+  ["nba-fpfee", "nba-drmtx"],
+  ["slides-artifact-china-s-bond-market-ue4c5", "china-s-bond-market-wcgcz"],
+]);
 
 /* EVENTS: upcoming events, worked out from the date (Princeton time). Events drop off on
    their own once they end. The soonest one gets the dark "Next up" card. Example:
@@ -789,32 +813,46 @@ const LEADS = [
   /* ---------- Artifacts gallery ---------- */
   const known = new Map();
 
+  // A shared chat isn't the artifact itself, so its link says so and sorts after real artifacts.
+  const isChatLink = (url) => url.includes("/share/");
+  const linkLabel = (url) => (isChatLink(url) ? "Read the chat" : "Try it");
+  const linkRank = (a) => (!ARTIFACT_URL.test(a.url) ? 0 : isChatLink(a.url) ? 1 : 2);
+
   function artifactCard(a) {
     return `
       <article class="card artifact-card">
         <div class="card-body">
           <h3 class="card-title">${esc(a.title)}</h3>
-          <p class="clamp-3">${esc(a.description)}</p>
           <p class="meta">By ${esc(a.name)}</p>
+          <p class="clamp-5">${esc(a.description)}</p>
+          ${a.story ? `<p class="artifact-why clamp-5">${esc(a.story)}</p>` : ""}
           <div class="card-actions">
-            <button type="button" class="text-link link-btn" data-artifact="${esc(a.id)}" aria-haspopup="dialog">How it was made<span class="sr-only">: ${esc(a.title)}</span></button>
-            ${ARTIFACT_URL.test(a.url) ? `<a class="text-link" ${linkAttrs(a.url)}>Open ${arrow}<span class="sr-only">: ${esc(a.title)}</span>${newTab(a.url)}</a>` : ""}
+            ${linkRank(a) ? `<a class="text-link" ${linkAttrs(a.url)}>${linkLabel(a.url)} ${arrow}<span class="sr-only">: ${esc(a.title)}</span>${newTab(a.url)}</a>` : ""}
+            <button type="button" class="text-link link-btn" data-artifact="${esc(a.id)}" aria-haspopup="dialog">Details<span class="sr-only">: ${esc(a.title)}</span></button>
           </div>
         </div>
       </article>`;
+  }
+
+  let galleryHtml = "";
+
+  function showGallery(rows) {
+    const items = rows.map(normalize).filter((a) => a.id && a.title).sort((a, b) => linkRank(b) - linkRank(a));
+    known.clear();
+    items.forEach((a) => known.set(a.id, a));
+    const html = items.map(artifactCard).join("");
+    // Left alone when nothing changed, so the Sheet's answer can't take keyboard focus off a card.
+    if (html !== galleryHtml) $("#artifact-grid").innerHTML = galleryHtml = html;
+    $("#artifacts").hidden = !items.length;
+    $('.nav-links a[href="#artifacts"]').parentElement.hidden = !items.length;
   }
 
   async function loadGallery() {
     if (!API) return;
     try {
       const res = await apiGet();
-      const items = (res.artifacts || []).map(normalize).filter((a) => a.id && a.title);
-      items.forEach((a) => known.set(a.id, a));
-      if (!items.length) return;
-      $("#artifact-grid").innerHTML = items.map(artifactCard).join("");
-      $("#artifacts").hidden = false;
-      $('.nav-links a[href="#artifacts"]').parentElement.hidden = false;
-    } catch { /* the gallery stays hidden if the Sheet can't be reached */ }
+      if (res.ok && Array.isArray(res.artifacts)) showGallery(res.artifacts);
+    } catch { /* the saved copy stays up if the Sheet can't be reached */ }
   }
 
   $("#artifact-grid").addEventListener("click", (e) => {
@@ -842,10 +880,10 @@ const LEADS = [
     return `
       ${a.approved ? "" : `<p class="pending">This page is live, but a club lead hasn't reviewed it yet. It joins the gallery once they have.</p>`}
       <div class="prose">${paragraphs(a.description)}</div>
-      ${a.story ? `<h3 class="modal-sub">How I built it</h3><div class="prose">${paragraphs(a.story)}</div>` : ""}
-      ${a.prompt ? `<h3 class="modal-sub">The prompt I started with</h3><pre class="prompt">${esc(a.prompt)}</pre>` : ""}
+      ${a.story ? `<h3 class="modal-sub">Why and how</h3><div class="prose">${paragraphs(a.story)}</div>` : ""}
+      ${a.prompt ? `<h3 class="modal-sub">The first prompt</h3><pre class="prompt">${esc(a.prompt)}</pre>` : ""}
       <ul class="modal-links">
-        ${ARTIFACT_URL.test(a.url) ? `<li><a class="btn btn-dark" ${linkAttrs(a.url)}>Open the artifact${newTab(a.url)}</a></li>` : ""}
+        ${linkRank(a) ? `<li><a class="btn btn-dark" ${linkAttrs(a.url)}>${linkLabel(a.url)}${newTab(a.url)}</a></li>` : ""}
         <li><button type="button" class="pill-link" data-copy-link="${esc(a.id)}">Copy link</button></li>
       </ul>
       <p class="sr-only" role="status" id="copy-status"></p>`;
@@ -899,6 +937,7 @@ const LEADS = [
     if (!location.hash.startsWith(PREFIX)) return false;
     let id = "";
     try { id = decodeURIComponent(location.hash.slice(PREFIX.length)); } catch { /* malformed link */ }
+    id = MERGED_ARTIFACTS.get(id) || id;
     $("#splash")?.remove();
     showArtifact(id);
     return true;
@@ -1084,6 +1123,7 @@ const LEADS = [
   /* ---------- Go ---------- */
   renderEvents();
   $("#lead-grid").innerHTML = LEADS.map(leadCard).join("");
+  showGallery(SAVED_ARTIFACTS);
   readArtifactHash();
   loadGallery();
 })();

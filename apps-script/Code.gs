@@ -8,7 +8,8 @@
  * Every submission starts unapproved. Its own page (#artifact/<id>) works right away with a
  * "waiting for review" note, and it joins the site's gallery once a lead ticks Approved.
  * Delete a row to take an artifact down. Only the columns in PUBLIC are ever sent to the
- * site, so the Email column stays private. Don't reorder the columns.
+ * site, so the Email column stays private. Don't reorder the columns. Columns after these
+ * (such as Notes) are ignored, so leads can keep private notes there.
  */
 
 const SHEET_NAME = "Submissions";
@@ -22,7 +23,7 @@ const COLUMNS = [
   ["name", "Name"],
   ["url", "Artifact link"],
   ["description", "What it does"],
-  ["story", "How they built it"],
+  ["story", "Why and how they built it"],
   ["prompt", "Starting prompt"],
   ["email", "Email (private)"],
 ];

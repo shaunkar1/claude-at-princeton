@@ -25,11 +25,15 @@ Artifacts don't need any code changes. Members submit them on the site, and they
 Submissions go to the **Claude@Princeton artifact submissions** Google Sheet, one row each.
 
 - **New rows start unapproved.** The submitter's page (`#artifact/<id>`) works right away and says it's waiting for review.
-- **Approve** by ticking the Approved box. The artifact joins the gallery on the next page load, newest first. The gallery section and its nav link only appear once at least one artifact is approved.
+- **Approve** by ticking the Approved box. The artifact joins "What members built" on the next page load. Artifacts with a working link come first, then newest first.
 - **Edit** a title or description by editing its cell. Changes show on the next page load.
 - **Take one down** by deleting its row. Its link then says the artifact couldn't be found.
 - **Email (private)** is never sent to the site; only people with access to the Sheet see it.
-- Don't reorder or rename the columns; the script reads them by position.
+- **Artifact link** can be left empty. Check each link in a private window, since an artifact that isn't public asks visitors to sign in. A card with no link still shows the title, description and story.
+- **Notes (private)** and any columns after it never reach the site.
+- **Original submissions** is a copy of the first 12 raw rows, kept before they were merged to one per person. Nothing reads it, so it's safe to delete.
+- **The saved copy:** `SAVED_ARTIFACTS` in `index.html` shows the section instantly while the Sheet loads, and the Sheet then replaces it. Refresh it now and then from the web app's output; it never needs emails.
+- Don't reorder the columns; the script reads them by position.
 
 The site only accepts artifact links on `claude.ai` (and the older `claude.site`), which is what Claude's Publish button gives.
 
